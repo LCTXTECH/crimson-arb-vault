@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import { useAuth } from "@/lib/use-auth"
 
 interface OnboardingModalProps {
   isOpen: boolean
@@ -192,26 +193,30 @@ export function OnboardingModal({ isOpen, onComplete, onClose }: OnboardingModal
   const [walletCreated, setWalletCreated] = useState(false)
   const [sentryEnabled, setSentryEnabled] = useState(false)
   const [mounted, setMounted] = useState(false)
+  const { signIn, authenticated, user } = useAuth()
 
   useEffect(() => {
     setMounted(true)
   }, [])
 
-  if (!isOpen || !mounted) return null
-
-  const handleSocialLogin = (provider: "google" | "x") => {
-    setIsLoading(true)
-    // Simulate auth
-    setTimeout(() => {
-      setIsLoading(false)
+  // If user is already authenticated, skip to step 2
+  useEffect(() => {
+    if (authenticated && user && currentStep === 1) {
       setCurrentStep(2)
-      // Start wallet creation animation
       setWalletCreating(true)
       setTimeout(() => {
         setWalletCreating(false)
         setWalletCreated(true)
-      }, 3000)
-    }, 1500)
+      }, 2000)
+    }
+  }, [authenticated, user, currentStep])
+
+  if (!isOpen || !mounted) return null
+
+  const handleSocialLogin = (provider: "google" | "x") => {
+    setIsLoading(true)
+    // Redirect to OAuth flow
+    signIn(provider)
   }
 
   const handleCreateVault = () => {

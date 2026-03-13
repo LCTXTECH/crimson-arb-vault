@@ -45,8 +45,14 @@ const CORE_PAGES = [
   { path: "/privacy", priority: 0.3, changeFrequency: "yearly" as const },
 ]
 
-// Market pages - maps to /app/markets/[symbol]/page.tsx
-const MARKETS = ["sol-perp", "btc-perp", "eth-perp", "jto-perp", "wif-perp"]
+// Market pages - maps to /app/markets/[symbol]/page.tsx with full SEO
+const MARKETS = [
+  { symbol: "sol-perp", priority: 0.9, name: "Solana Perpetual Futures" },
+  { symbol: "btc-perp", priority: 0.9, name: "Bitcoin Perpetual Futures" },
+  { symbol: "eth-perp", priority: 0.85, name: "Ethereum Perpetual Futures" },
+  { symbol: "jto-perp", priority: 0.75, name: "Jito Perpetual Futures" },
+  { symbol: "wif-perp", priority: 0.7, name: "dogwifhat Perpetual Futures" },
+]
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date()
@@ -90,13 +96,27 @@ export default function sitemap(): MetadataRoute.Sitemap {
     }
   }
 
-  // Add dynamic market pages (5 URLs)
+  // Add dynamic market pages with geo-targeting (5 URLs)
   for (const market of MARKETS) {
     entries.push({
-      url: `${BASE_URL}/markets/${market}`,
+      url: `${BASE_URL}/markets/${market.symbol}`,
       lastModified: now,
       changeFrequency: "hourly",
-      priority: 0.8,
+      priority: market.priority,
+      alternates: {
+        languages: {
+          "en": `${BASE_URL}/markets/${market.symbol}`,
+          "en-US": `${BASE_URL}/markets/${market.symbol}`,
+          "en-GB": `${BASE_URL}/markets/${market.symbol}`,
+          "en-SG": `${BASE_URL}/markets/${market.symbol}`,
+          "en-HK": `${BASE_URL}/markets/${market.symbol}`,
+          "en-AE": `${BASE_URL}/markets/${market.symbol}`,
+          "de-DE": `${BASE_URL}/markets/${market.symbol}`,
+          "ja-JP": `${BASE_URL}/markets/${market.symbol}`,
+          "zh-CN": `${BASE_URL}/markets/${market.symbol}`,
+          "ko-KR": `${BASE_URL}/markets/${market.symbol}`,
+        },
+      },
     })
   }
 
