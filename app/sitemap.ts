@@ -2,7 +2,21 @@ import { MetadataRoute } from "next"
 
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://crimsonarb.com"
 
-// Define all supported regions for geo-targeting
+/**
+ * CrimsonArb Sitemap Generator
+ * 
+ * Total Pages: 115
+ * - 11 Core Pages (canonical URLs without region prefix)
+ * - 99 Regional Variants (11 pages x 9 regions with prefix)
+ * - 5 Market Pages
+ * 
+ * All URLs map to actual Next.js routes:
+ * - Core pages: /app/[route]/page.tsx
+ * - Regional: /app/[region]/[[...slug]]/page.tsx
+ * - Markets: /app/markets/[symbol]/page.tsx
+ */
+
+// Define all supported regions for geo-targeting (9 regional + 1 global default)
 const GEO_REGIONS = [
   { code: "en", region: "global", name: "Global" },
   { code: "en-US", region: "us", name: "United States" },
@@ -16,7 +30,7 @@ const GEO_REGIONS = [
   { code: "ko-KR", region: "kr", name: "South Korea" },
 ] as const
 
-// Core pages that exist in all regions
+// Core pages - these map to actual /app/[route]/page.tsx files
 const CORE_PAGES = [
   { path: "", priority: 1.0, changeFrequency: "daily" as const },
   { path: "/vault", priority: 0.9, changeFrequency: "hourly" as const },
@@ -31,52 +45,61 @@ const CORE_PAGES = [
   { path: "/privacy", priority: 0.3, changeFrequency: "yearly" as const },
 ]
 
+// Market pages - maps to /app/markets/[symbol]/page.tsx
+const MARKETS = ["sol-perp", "btc-perp", "eth-perp", "jto-perp", "wif-perp"]
+
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date()
   const entries: MetadataRoute.Sitemap = []
 
-  // Generate entries for each core page
+  // Generate entries for each core page (11 canonical pages)
   for (const page of CORE_PAGES) {
-    // Main URL (default/global)
+    // Build hreflang alternates for this page
+    const alternateLanguages: Record<string, string> = {}
+    for (const region of GEO_REGIONS) {
+      if (region.region === "global") {
+        // Global/default uses canonical URL without prefix
+        alternateLanguages[region.code] = `${BASE_URL}${page.path}`
+      } else {
+        // Regional variants use /{region}/ prefix
+        alternateLanguages[region.code] = `${BASE_URL}/${region.region}${page.path}`
+      }
+    }
+
+    // Main canonical URL (no region prefix)
     entries.push({
       url: `${BASE_URL}${page.path}`,
       lastModified: now,
       changeFrequency: page.changeFrequency,
       priority: page.priority,
       alternates: {
-        languages: GEO_REGIONS.reduce(
-          (acc, region) => {
-            acc[region.code] = `${BASE_URL}/${region.region}${page.path}`
-            return acc
-          },
-          {} as Record<string, string>
-        ),
+        languages: alternateLanguages,
       },
     })
 
-    // Regional variants
+    // Regional variant URLs (9 regions x 11 pages = 99 URLs)
     for (const region of GEO_REGIONS) {
-      if (region.region === "global") continue // Skip global as it's the default
+      if (region.region === "global") continue // Skip global as it's the canonical
 
       entries.push({
         url: `${BASE_URL}/${region.region}${page.path}`,
         lastModified: now,
         changeFrequency: page.changeFrequency,
-        priority: page.priority * 0.9, // Slightly lower priority for regional variants
+        priority: page.priority * 0.9,
       })
     }
   }
 
-  // Add dynamic market pages
-  const MARKETS = ["SOL-PERP", "BTC-PERP", "ETH-PERP", "JTO-PERP", "WIF-PERP"]
+  // Add dynamic market pages (5 URLs)
   for (const market of MARKETS) {
     entries.push({
-      url: `${BASE_URL}/markets/${market.toLowerCase()}`,
+      url: `${BASE_URL}/markets/${market}`,
       lastModified: now,
       changeFrequency: "hourly",
       priority: 0.8,
     })
   }
 
+  // Total: 11 canonical + 99 regional + 5 markets = 115 URLs
   return entries
 }
