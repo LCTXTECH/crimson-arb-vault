@@ -15,6 +15,8 @@ import { AuditTrailDrawer } from "@/components/audit-trail-drawer"
 import { DepthChart } from "@/components/depth-chart"
 import { GeoSelector } from "@/components/geo-selector"
 import { OnboardingModal } from "@/components/onboarding-modal"
+import { SiteFooter } from "@/components/site-footer"
+import Link from "next/link"
 
 // Mock data for demonstration
 const mockTrades: DriftTradeData[] = [
@@ -269,13 +271,13 @@ export default function Dashboard() {
       {/* Header */}
       <header className="border-b border-border bg-card/50 backdrop-blur-sm sticky top-0 z-10">
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4">
-          <div className="flex items-center gap-3">
+          <Link href="/" className="flex items-center gap-3">
             <CrimsonLogo />
             <div>
               <h1 className="text-lg font-semibold text-foreground">CrimsonArb Vault</h1>
               <p className="text-xs text-muted-foreground">AgentSentry Active</p>
             </div>
-          </div>
+          </Link>
           <div className="flex items-center gap-4">
             <button
               onClick={() => setIsOnboardingOpen(true)}
@@ -410,6 +412,9 @@ export default function Dashboard() {
         onClose={() => setIsOnboardingOpen(false)}
         onComplete={() => setIsOnboardingOpen(false)}
       />
+
+      {/* Footer */}
+      <SiteFooter />
     </div>
   )
 }
