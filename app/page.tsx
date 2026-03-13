@@ -172,14 +172,16 @@ function ReasoningCard({ trade, isExpanded, onToggle }: { trade: DriftTradeData;
   )
 }
 
-function ExecutionLog({ trades }: { trades: DriftTradeData[] }) {
+function ExecutionLog({ trades, mounted }: { trades: DriftTradeData[]; mounted: boolean }) {
   return (
     <div className="rounded-lg border border-border bg-card p-4">
       <h3 className="mb-4 text-sm font-medium text-muted-foreground">Execution Log</h3>
       <div className="space-y-2 font-mono text-xs">
         {trades.map((trade, i) => (
           <div key={i} className="flex items-start gap-2 text-muted-foreground">
-            <span className="text-crimson/70">[{new Date(trade.timestamp || Date.now()).toLocaleTimeString()}]</span>
+            <span className="text-crimson/70">
+              [{mounted ? new Date(trade.timestamp || Date.now()).toLocaleTimeString() : "--:--:--"}]
+            </span>
             <span className="text-foreground">{generateLogMessage(trade)}</span>
           </div>
         ))}
@@ -190,9 +192,12 @@ function ExecutionLog({ trades }: { trades: DriftTradeData[] }) {
 
 export default function Dashboard() {
   const [expandedCard, setExpandedCard] = useState<number | null>(0)
-  const [currentTime, setCurrentTime] = useState(new Date())
+  const [currentTime, setCurrentTime] = useState<Date | null>(null)
+  const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
+    setMounted(true)
+    setCurrentTime(new Date())
     const timer = setInterval(() => setCurrentTime(new Date()), 1000)
     return () => clearInterval(timer)
   }, [])
@@ -218,7 +223,7 @@ export default function Dashboard() {
               <span className="text-xs text-muted-foreground">Connected to Drift</span>
             </div>
             <span className="text-xs font-mono text-muted-foreground">
-              {currentTime.toLocaleTimeString()}
+              {mounted && currentTime ? currentTime.toLocaleTimeString() : "--:--:--"}
             </span>
           </div>
         </div>
@@ -254,7 +259,7 @@ export default function Dashboard() {
           <div className="space-y-4">
             <h2 className="text-lg font-semibold text-foreground">Brain Analysis</h2>
             <BrainMetricsCard trade={mockTrades[0]} />
-            <ExecutionLog trades={mockTrades} />
+            <ExecutionLog trades={mockTrades} mounted={mounted} />
           </div>
         </div>
       </main>
