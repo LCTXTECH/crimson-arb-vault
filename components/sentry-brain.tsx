@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 
 interface SentryThought {
   id: string
@@ -29,6 +29,7 @@ export function SentryBrain({ isEvaluating, isSafe, onClawToggle, clawEnabled = 
   const [mounted, setMounted] = useState(false)
   const [activePhase, setActivePhase] = useState(0)
   const [thoughts, setThoughts] = useState<SentryThought[]>([])
+  const thoughtCounterRef = useRef(0)
 
   useEffect(() => {
     setMounted(true)
@@ -39,21 +40,31 @@ export function SentryBrain({ isEvaluating, isSafe, onClawToggle, clawEnabled = 
     if (!isEvaluating) return
 
     const interval = setInterval(() => {
+      // Increment counter first, outside of any state updater
+      thoughtCounterRef.current += 1
+      const currentCounter = thoughtCounterRef.current
+      
       setActivePhase((prev) => {
-        const next = (prev + 1) % THOUGHT_PHASES.length
+        const nextPhase = (prev + 1) % THOUGHT_PHASES.length
         
-        // Add thought to timeline
+        // Add thought to timeline using the counter captured above
         const thought: SentryThought = {
-          id: `thought-${Date.now()}`,
+          id: `thought-${currentCounter}`,
           phase: THOUGHT_PHASES[prev].phase,
           message: THOUGHT_PHASES[prev].label,
           timestamp: new Date(),
           status: "complete",
         }
         
-        setThoughts((prevThoughts) => [thought, ...prevThoughts].slice(0, 8))
+        setThoughts((prevThoughts) => {
+          // Check if this thought already exists to handle Strict Mode double-invoke
+          if (prevThoughts.some(t => t.id === thought.id)) {
+            return prevThoughts
+          }
+          return [thought, ...prevThoughts].slice(0, 8)
+        })
         
-        return next
+        return nextPhase
       })
     }, 2000)
 
