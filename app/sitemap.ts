@@ -1,6 +1,6 @@
 import { MetadataRoute } from "next"
 
-const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://crimsonarb.io"
+const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://crimsonarb.com"
 
 // Define all supported regions for geo-targeting
 const GEO_REGIONS = [
