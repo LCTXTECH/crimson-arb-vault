@@ -14,6 +14,7 @@ import { ApprovalQueue } from "@/components/approval-queue"
 import { AuditTrailDrawer } from "@/components/audit-trail-drawer"
 import { DepthChart } from "@/components/depth-chart"
 import { GeoSelector } from "@/components/geo-selector"
+import { OnboardingModal } from "@/components/onboarding-modal"
 
 // Mock data for demonstration
 const mockTrades: DriftTradeData[] = [
@@ -238,6 +239,7 @@ export default function Dashboard() {
   const [pendingTrades, setPendingTrades] = useState(mockPendingTrades)
   const [activeTab, setActiveTab] = useState<"reasoning" | "heatmap" | "depth">("reasoning")
   const [isAuditDrawerOpen, setIsAuditDrawerOpen] = useState(false)
+  const [isOnboardingOpen, setIsOnboardingOpen] = useState(false)
 
   useEffect(() => {
     setMounted(true)
@@ -275,6 +277,15 @@ export default function Dashboard() {
             </div>
           </div>
           <div className="flex items-center gap-4">
+            <button
+              onClick={() => setIsOnboardingOpen(true)}
+              className="flex items-center gap-2 rounded-lg bg-crimson px-3 py-1.5 text-xs font-medium text-white hover:bg-crimson-dark transition-colors"
+            >
+              <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
+              </svg>
+              Get Started
+            </button>
             <GeoSelector />
             <button
               onClick={() => setIsAuditDrawerOpen(true)}
@@ -392,6 +403,13 @@ export default function Dashboard() {
 
       {/* Audit Trail Drawer */}
       <AuditTrailDrawer isOpen={isAuditDrawerOpen} onClose={() => setIsAuditDrawerOpen(false)} />
+
+      {/* Onboarding Modal */}
+      <OnboardingModal 
+        isOpen={isOnboardingOpen} 
+        onClose={() => setIsOnboardingOpen(false)}
+        onComplete={() => setIsOnboardingOpen(false)}
+      />
     </div>
   )
 }
