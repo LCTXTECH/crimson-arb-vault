@@ -1,6 +1,6 @@
 import { Metadata, Viewport } from "next"
 
-const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://crimsonarb.io"
+const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://crimsonarb.com"
 
 // Geo-targeted regions with language codes
 export const GEO_REGIONS = {
