@@ -72,8 +72,8 @@ export const baseMetadata: Metadata = {
     description:
       "Delta-neutral arbitrage vault powered by AgentSentry AI. Capture 15-40% APY from funding rate arbitrage.",
     images: [`${BASE_URL}/twitter-image.png`],
-    creator: "@CrimsonArb",
-    site: "@CrimsonArb",
+    creator: "@bcblockhtx",
+    site: "@bcblockhtx",
   },
   robots: {
     index: true,
@@ -171,9 +171,9 @@ export function generateOrganizationSchema() {
     description:
       "AI-powered delta-neutral arbitrage vault on Drift Protocol",
     sameAs: [
-      "https://twitter.com/CrimsonArb",
-      "https://github.com/CrimsonArb",
-      "https://discord.gg/crimsonarb",
+      "https://x.com/bcblockhtx",
+      "https://github.com/LCTXTECH",
+      "https://discord.gg/V2DksdSE",
     ],
     contactPoint: {
       "@type": "ContactPoint",
