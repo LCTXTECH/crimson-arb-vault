@@ -12,6 +12,7 @@ import {
 import { SentryBrain } from "@/components/sentry-brain"
 import { DepthChart } from "@/components/depth-chart"
 import { SiteFooter } from "@/components/site-footer"
+import { DevControlPanel } from "@/components/dev-control-panel"
 
 // Devnet mock data with whale-sized positions
 const devnetTrades: DriftTradeData[] = [
@@ -555,6 +556,9 @@ export default function SandboxDashboard() {
 
       {/* Feedback Widget */}
       <FeedbackWidget notes={feedbackNotes} onSubmit={handleFeedbackSubmit} />
+
+      {/* Dev Control Panel - Sidebar for testing */}
+      <DevControlPanel />
 
       {/* Footer */}
       <SiteFooter />
