@@ -1,0 +1,20 @@
+[package]
+name = "ctoken-market-program"
+version = "0.1.0"
+description = "cToken Market Program - Liquidity pool with cToken mint/burn exchange rate"
+edition = "2021"
+
+[lib]
+crate-type = ["cdylib", "lib"]
+name = "ctoken_market_program"
+
+[features]
+no-entrypoint = []
+no-idl = []
+no-log-ix-name = []
+cpi = ["no-entrypoint"]
+default = []
+
+[dependencies]
+anchor-lang = { version = "0.31.1", features = ["init-if-needed"] }
+anchor-spl = { version = "0.31.1", features = ["token", "associated_token"] }

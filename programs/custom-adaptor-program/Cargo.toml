@@ -1,0 +1,21 @@
+[package]
+name = "custom-adaptor-program"
+version = "0.1.0"
+description = "Custom Adaptor Program - CPI translation layer for Ranger Earn vaults"
+edition = "2021"
+
+[lib]
+crate-type = ["cdylib", "lib"]
+name = "custom_adaptor_program"
+
+[features]
+no-entrypoint = []
+no-idl = []
+no-log-ix-name = []
+cpi = ["no-entrypoint"]
+default = []
+
+[dependencies]
+anchor-lang = { version = "0.31.1", features = ["init-if-needed"] }
+anchor-spl = { version = "0.31.1", features = ["token", "associated_token"] }
+ctoken-market-program = { path = "../ctoken-market-program", features = ["cpi"] }

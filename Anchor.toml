@@ -3,22 +3,22 @@ seeds = false
 skip-lint = false
 
 [programs.localnet]
-crimson_vault = "CrmsnVLT1111111111111111111111111111111111"
-crimson_adaptor = "CrmsnADP1111111111111111111111111111111111"
+ctoken_market_program = "CtkMkt11111111111111111111111111111111111111"
+custom_adaptor_program = "CustAdpt11111111111111111111111111111111111"
 
 [programs.devnet]
-crimson_vault = "CrmsnVLT1111111111111111111111111111111111"
-crimson_adaptor = "CrmsnADP1111111111111111111111111111111111"
+ctoken_market_program = "CtkMkt11111111111111111111111111111111111111"
+custom_adaptor_program = "CustAdpt11111111111111111111111111111111111"
 
 [programs.mainnet]
-crimson_vault = "CrmsnVLT1111111111111111111111111111111111"
-crimson_adaptor = "CrmsnADP1111111111111111111111111111111111"
+ctoken_market_program = "CtkMkt11111111111111111111111111111111111111"
+custom_adaptor_program = "CustAdpt11111111111111111111111111111111111"
 
 [registry]
 url = "https://api.apr.dev"
 
 [provider]
-cluster = "devnet"
+cluster = "localnet"
 wallet = "~/.config/solana/id.json"
 
 [scripts]
@@ -26,10 +26,22 @@ test = "yarn run ts-mocha -p ./tsconfig.json -t 1000000 tests/**/*.ts"
 
 [workspace]
 members = [
-    "programs/crimson-vault",
-    "programs/crimson-adaptor"
+    "programs/ctoken-market-program",
+    "programs/custom-adaptor-program"
 ]
 
 [test]
 startup_wait = 5000
 shutdown_wait = 2000
+
+# Clone Ranger/Voltr programs for localnet testing
+[test.validator]
+url = "https://api.devnet.solana.com"
+
+# Voltr Vault SDK program (Ranger Earn Vault)
+[[test.validator.clone]]
+address = "vo1tWgqZmjG8c6wjTM4DCXAB8VRdgwkXKbA8qR5PYWm"
+
+# Voltr Strategy program
+[[test.validator.clone]]
+address = "stracc1fvMSumUyehwxLYg3S4Cj9XWewGxBSvwPjWNF"
