@@ -29,6 +29,7 @@ export function SentryBrain({ isEvaluating, isSafe, onClawToggle, clawEnabled = 
   const [mounted, setMounted] = useState(false)
   const [activePhase, setActivePhase] = useState(0)
   const [thoughts, setThoughts] = useState<SentryThought[]>([])
+  const [thoughtCounter, setThoughtCounter] = useState(0)
 
   useEffect(() => {
     setMounted(true)
@@ -39,26 +40,29 @@ export function SentryBrain({ isEvaluating, isSafe, onClawToggle, clawEnabled = 
     if (!isEvaluating) return
 
     const interval = setInterval(() => {
-      setActivePhase((prev) => {
-        const next = (prev + 1) % THOUGHT_PHASES.length
+      setActivePhase((prev) => (prev + 1) % THOUGHT_PHASES.length)
+      
+      setThoughtCounter((counter) => {
+        const newCounter = counter + 1
+        const phaseIndex = activePhase
         
         // Add thought to timeline
         const thought: SentryThought = {
-          id: `thought-${Date.now()}`,
-          phase: THOUGHT_PHASES[prev].phase,
-          message: THOUGHT_PHASES[prev].label,
+          id: `thought-${newCounter}-${Date.now()}`,
+          phase: THOUGHT_PHASES[phaseIndex].phase,
+          message: THOUGHT_PHASES[phaseIndex].label,
           timestamp: new Date(),
           status: "complete",
         }
         
         setThoughts((prevThoughts) => [thought, ...prevThoughts].slice(0, 8))
         
-        return next
+        return newCounter
       })
     }, 2000)
 
     return () => clearInterval(interval)
-  }, [isEvaluating])
+  }, [isEvaluating, activePhase])
 
   return (
     <div className="rounded-lg border border-border bg-card p-6">
