@@ -13,6 +13,7 @@ import { LiquidityHeatmap } from "@/components/liquidity-heatmap"
 import { ApprovalQueue } from "@/components/approval-queue"
 import { AuditTrailDrawer } from "@/components/audit-trail-drawer"
 import { DepthChart } from "@/components/depth-chart"
+import { GeoSelector } from "@/components/geo-selector"
 
 // Mock data for demonstration
 const mockTrades: DriftTradeData[] = [
@@ -274,6 +275,7 @@ export default function Dashboard() {
             </div>
           </div>
           <div className="flex items-center gap-4">
+            <GeoSelector />
             <button
               onClick={() => setIsAuditDrawerOpen(true)}
               className="flex items-center gap-2 rounded-lg border border-border bg-muted/50 px-3 py-1.5 text-xs text-muted-foreground hover:border-crimson/50 hover:text-foreground transition-colors"
