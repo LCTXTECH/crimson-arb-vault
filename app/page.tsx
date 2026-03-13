@@ -8,6 +8,9 @@ import {
   type DriftTradeData,
   type DriftMarketContext,
 } from "@/lib/ai-reasoning"
+import { SentryBrain } from "@/components/sentry-brain"
+import { LiquidityHeatmap } from "@/components/liquidity-heatmap"
+import { ApprovalQueue } from "@/components/approval-queue"
 
 // Mock data for demonstration
 const mockTrades: DriftTradeData[] = [
@@ -54,6 +57,39 @@ const mockTrades: DriftTradeData[] = [
   },
 ]
 
+const mockPendingTrades = [
+  {
+    id: "pending-1",
+    type: "OPEN_BASIS" as const,
+    symbol: "JTO-PERP",
+    size: 450.0,
+    entryPrice: 3.85,
+    fundingRate: 0.312,
+    direction: "SHORT" as const,
+    spotPrice: 3.82,
+    perpPrice: 3.85,
+    liquidityDepth: 72,
+    riskScore: 28,
+    proposedAt: new Date(),
+    expiresAt: new Date(Date.now() + 300000), // 5 minutes
+    sentryScore: 87,
+  },
+  {
+    id: "pending-2",
+    type: "REBALANCE" as const,
+    symbol: "SOL-PERP",
+    size: 15.25,
+    entryPrice: 142.50,
+    fundingRate: 0.248,
+    direction: "SHORT" as const,
+    liquidityDepth: 85,
+    riskScore: 22,
+    proposedAt: new Date(Date.now() - 60000),
+    expiresAt: new Date(Date.now() + 180000), // 3 minutes
+    sentryScore: 92,
+  },
+]
+
 const mockContext: DriftMarketContext = {
   marketCondition: "BULLISH",
   avgFundingRate24h: 0.185,
@@ -83,7 +119,7 @@ function BrainMetricsCard({ trade }: { trade: DriftTradeData }) {
       <h3 className="mb-4 text-sm font-medium text-muted-foreground">Decision Brain Metrics</h3>
       <div className="space-y-4">
         <MetricBar label="Funding Yield Intensity" value={metrics.fundingYieldIntensity} color="bg-crimson" />
-        <MetricBar label="Liquidity Depth" value={metrics.liquidityDepth} color="bg-success" />
+        <MetricBar label="Liquidity Depth" value={metrics.liquidityDepth} color="bg-[#00FF88]" />
         <MetricBar label="Decay Resistance" value={metrics.predictedDecay} color="bg-warning" />
       </div>
       <div className="mt-4 flex items-center justify-between border-t border-border pt-4">
@@ -115,17 +151,17 @@ function ReasoningCard({ trade, isExpanded, onToggle }: { trade: DriftTradeData;
   const reasoning = generateAIReasoning(trade, mockContext)
 
   const confidenceColor = {
-    HIGH: "text-success",
+    HIGH: "text-[#00FF88]",
     MEDIUM: "text-warning",
     LOW: "text-crimson",
   }[reasoning.confidence]
 
   const typeColors: Record<string, string> = {
     OPEN_BASIS: "bg-crimson/20 text-crimson",
-    CLOSE_BASIS: "bg-success/20 text-success",
+    CLOSE_BASIS: "bg-[#00FF88]/20 text-[#00FF88]",
     REBALANCE: "bg-warning/20 text-warning",
     LIQUIDATION_GUARD: "bg-crimson/30 text-crimson border border-crimson/50",
-    FUNDING_CAPTURE: "bg-success/20 text-success",
+    FUNDING_CAPTURE: "bg-[#00FF88]/20 text-[#00FF88]",
   }
 
   return (
@@ -194,6 +230,10 @@ export default function Dashboard() {
   const [expandedCard, setExpandedCard] = useState<number | null>(0)
   const [currentTime, setCurrentTime] = useState<Date | null>(null)
   const [mounted, setMounted] = useState(false)
+  const [clawEnabled, setClawEnabled] = useState(false)
+  const [isEvaluating, setIsEvaluating] = useState(true)
+  const [pendingTrades, setPendingTrades] = useState(mockPendingTrades)
+  const [activeTab, setActiveTab] = useState<"reasoning" | "heatmap">("reasoning")
 
   useEffect(() => {
     setMounted(true)
@@ -201,6 +241,22 @@ export default function Dashboard() {
     const timer = setInterval(() => setCurrentTime(new Date()), 1000)
     return () => clearInterval(timer)
   }, [])
+
+  // Simulate evaluation cycles
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setIsEvaluating((prev) => !prev)
+    }, 8000)
+    return () => clearInterval(interval)
+  }, [])
+
+  const handleApprove = (tradeId: string) => {
+    setPendingTrades((prev) => prev.filter((t) => t.id !== tradeId))
+  }
+
+  const handleReject = (tradeId: string) => {
+    setPendingTrades((prev) => prev.filter((t) => t.id !== tradeId))
+  }
 
   return (
     <div className="min-h-screen bg-background">
@@ -217,8 +273,8 @@ export default function Dashboard() {
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-2">
               <span className="relative flex h-2 w-2">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-success opacity-75"></span>
-                <span className="relative inline-flex h-2 w-2 rounded-full bg-success"></span>
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#00FF88] opacity-75"></span>
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-[#00FF88]"></span>
               </span>
               <span className="text-xs text-muted-foreground">Connected to Drift</span>
             </div>
@@ -239,25 +295,69 @@ export default function Dashboard() {
           <StatCard label="Risk Score" value="32/100" />
         </div>
 
+        {/* Sentry Brain */}
+        <div className="mb-6">
+          <SentryBrain
+            isEvaluating={isEvaluating}
+            isSafe={!isEvaluating}
+            clawEnabled={clawEnabled}
+            onClawToggle={setClawEnabled}
+          />
+        </div>
+
+        {/* Tab Navigation */}
+        <div className="mb-4 flex items-center gap-2 border-b border-border">
+          <button
+            onClick={() => setActiveTab("reasoning")}
+            className={`px-4 py-2 text-sm font-medium transition-colors border-b-2 -mb-px ${
+              activeTab === "reasoning"
+                ? "text-crimson border-crimson"
+                : "text-muted-foreground border-transparent hover:text-foreground"
+            }`}
+          >
+            AI Reasoning Feed
+          </button>
+          <button
+            onClick={() => setActiveTab("heatmap")}
+            className={`px-4 py-2 text-sm font-medium transition-colors border-b-2 -mb-px ${
+              activeTab === "heatmap"
+                ? "text-crimson border-crimson"
+                : "text-muted-foreground border-transparent hover:text-foreground"
+            }`}
+          >
+            Global Liquidity
+          </button>
+        </div>
+
         <div className="grid gap-6 lg:grid-cols-3">
-          {/* AI Reasoning Feed */}
+          {/* Main Content Area */}
           <div className="lg:col-span-2 space-y-4">
-            <h2 className="text-lg font-semibold text-foreground">AI Reasoning Feed</h2>
-            <div className="space-y-3">
-              {mockTrades.map((trade, i) => (
-                <ReasoningCard
-                  key={i}
-                  trade={trade}
-                  isExpanded={expandedCard === i}
-                  onToggle={() => setExpandedCard(expandedCard === i ? null : i)}
-                />
-              ))}
-            </div>
+            {activeTab === "reasoning" ? (
+              <>
+                <div className="space-y-3">
+                  {mockTrades.map((trade, i) => (
+                    <ReasoningCard
+                      key={i}
+                      trade={trade}
+                      isExpanded={expandedCard === i}
+                      onToggle={() => setExpandedCard(expandedCard === i ? null : i)}
+                    />
+                  ))}
+                </div>
+              </>
+            ) : (
+              <LiquidityHeatmap />
+            )}
           </div>
 
           {/* Sidebar */}
           <div className="space-y-4">
-            <h2 className="text-lg font-semibold text-foreground">Brain Analysis</h2>
+            <ApprovalQueue
+              trades={pendingTrades}
+              onApprove={handleApprove}
+              onReject={handleReject}
+              clawEnabled={clawEnabled}
+            />
             <BrainMetricsCard trade={mockTrades[0]} />
             <ExecutionLog trades={mockTrades} mounted={mounted} />
           </div>
