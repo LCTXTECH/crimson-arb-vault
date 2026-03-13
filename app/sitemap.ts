@@ -3,12 +3,20 @@ import { MetadataRoute } from "next"
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://crimsonarb.com"
 
 /**
- * CrimsonArb Sitemap Generator
+ * CrimsonArb Sitemap Generator - Google Search Console Optimized
+ * 
+ * Submission URL: https://crimsonarb.com/sitemap.xml
  * 
  * Total Pages: 115
  * - 11 Core Pages (canonical URLs without region prefix)
  * - 99 Regional Variants (11 pages x 9 regions with prefix)
  * - 5 Market Pages
+ * 
+ * Google Search Console Setup:
+ * 1. Add property: crimsonarb.com
+ * 2. Verify via DNS TXT record or HTML file
+ * 3. Submit sitemap: /sitemap.xml
+ * 4. Request indexing for priority pages
  * 
  * All URLs map to actual Next.js routes:
  * - Core pages: /app/[route]/page.tsx
@@ -32,30 +40,30 @@ const GEO_REGIONS = [
 
 // Core pages - these map to actual /app/[route]/page.tsx files
 const CORE_PAGES = [
-  { path: "", priority: 1.0, changeFrequency: "daily" as const },
-  { path: "/vault", priority: 0.9, changeFrequency: "hourly" as const },
-  { path: "/analytics", priority: 0.8, changeFrequency: "hourly" as const },
-  { path: "/docs", priority: 0.7, changeFrequency: "weekly" as const },
-  { path: "/docs/getting-started", priority: 0.7, changeFrequency: "monthly" as const },
-  { path: "/docs/api", priority: 0.6, changeFrequency: "weekly" as const },
-  { path: "/docs/sentry-ai", priority: 0.6, changeFrequency: "weekly" as const },
-  { path: "/about", priority: 0.5, changeFrequency: "monthly" as const },
-  { path: "/security", priority: 0.5, changeFrequency: "monthly" as const },
-  { path: "/terms", priority: 0.3, changeFrequency: "yearly" as const },
-  { path: "/privacy", priority: 0.3, changeFrequency: "yearly" as const },
+  { path: "", priority: 1.0, changeFrequency: "daily" as const, images: ["/images/hero-banner.jpg", "/images/global-banner.png"] },
+  { path: "/vault", priority: 0.9, changeFrequency: "hourly" as const, images: [] },
+  { path: "/analytics", priority: 0.8, changeFrequency: "hourly" as const, images: [] },
+  { path: "/docs", priority: 0.7, changeFrequency: "weekly" as const, images: [] },
+  { path: "/docs/getting-started", priority: 0.7, changeFrequency: "monthly" as const, images: [] },
+  { path: "/docs/api", priority: 0.6, changeFrequency: "weekly" as const, images: [] },
+  { path: "/docs/sentry-ai", priority: 0.6, changeFrequency: "weekly" as const, images: [] },
+  { path: "/about", priority: 0.5, changeFrequency: "monthly" as const, images: [] },
+  { path: "/security", priority: 0.5, changeFrequency: "monthly" as const, images: [] },
+  { path: "/terms", priority: 0.3, changeFrequency: "yearly" as const, images: [] },
+  { path: "/privacy", priority: 0.3, changeFrequency: "yearly" as const, images: [] },
 ]
 
 // Market pages - maps to /app/markets/[symbol]/page.tsx with full SEO
 const MARKETS = [
-  { symbol: "sol-perp", priority: 0.9, name: "Solana Perpetual Futures" },
-  { symbol: "btc-perp", priority: 0.9, name: "Bitcoin Perpetual Futures" },
-  { symbol: "eth-perp", priority: 0.85, name: "Ethereum Perpetual Futures" },
-  { symbol: "jto-perp", priority: 0.75, name: "Jito Perpetual Futures" },
-  { symbol: "wif-perp", priority: 0.7, name: "dogwifhat Perpetual Futures" },
+  { symbol: "sol-perp", priority: 0.9, name: "Solana Perpetual Futures", ticker: "SOL" },
+  { symbol: "btc-perp", priority: 0.9, name: "Bitcoin Perpetual Futures", ticker: "BTC" },
+  { symbol: "eth-perp", priority: 0.85, name: "Ethereum Perpetual Futures", ticker: "ETH" },
+  { symbol: "jto-perp", priority: 0.75, name: "Jito Perpetual Futures", ticker: "JTO" },
+  { symbol: "wif-perp", priority: 0.7, name: "dogwifhat Perpetual Futures", ticker: "WIF" },
 ]
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const now = new Date()
+  const now = new Date().toISOString()
   const entries: MetadataRoute.Sitemap = []
 
   // Generate entries for each core page (11 canonical pages)
@@ -65,16 +73,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
     for (const region of GEO_REGIONS) {
       if (region.region === "global") {
         // Global/default uses canonical URL without prefix
-        alternateLanguages[region.code] = `${BASE_URL}${page.path}`
+        alternateLanguages[region.code] = `${BASE_URL}${page.path || "/"}`
       } else {
         // Regional variants use /{region}/ prefix
         alternateLanguages[region.code] = `${BASE_URL}/${region.region}${page.path}`
       }
     }
+    // Add x-default for language-neutral fallback
+    alternateLanguages["x-default"] = `${BASE_URL}${page.path || "/"}`
 
     // Main canonical URL (no region prefix)
     entries.push({
-      url: `${BASE_URL}${page.path}`,
+      url: `${BASE_URL}${page.path || "/"}`,
       lastModified: now,
       changeFrequency: page.changeFrequency,
       priority: page.priority,
@@ -91,31 +101,27 @@ export default function sitemap(): MetadataRoute.Sitemap {
         url: `${BASE_URL}/${region.region}${page.path}`,
         lastModified: now,
         changeFrequency: page.changeFrequency,
-        priority: page.priority * 0.9,
+        priority: Math.round(page.priority * 0.9 * 100) / 100, // Round to 2 decimal places
       })
     }
   }
 
   // Add dynamic market pages with geo-targeting (5 URLs)
   for (const market of MARKETS) {
+    // Build market-specific alternates
+    const marketAlternates: Record<string, string> = {}
+    for (const region of GEO_REGIONS) {
+      marketAlternates[region.code] = `${BASE_URL}/markets/${market.symbol}`
+    }
+    marketAlternates["x-default"] = `${BASE_URL}/markets/${market.symbol}`
+
     entries.push({
       url: `${BASE_URL}/markets/${market.symbol}`,
       lastModified: now,
       changeFrequency: "hourly",
       priority: market.priority,
       alternates: {
-        languages: {
-          "en": `${BASE_URL}/markets/${market.symbol}`,
-          "en-US": `${BASE_URL}/markets/${market.symbol}`,
-          "en-GB": `${BASE_URL}/markets/${market.symbol}`,
-          "en-SG": `${BASE_URL}/markets/${market.symbol}`,
-          "en-HK": `${BASE_URL}/markets/${market.symbol}`,
-          "en-AE": `${BASE_URL}/markets/${market.symbol}`,
-          "de-DE": `${BASE_URL}/markets/${market.symbol}`,
-          "ja-JP": `${BASE_URL}/markets/${market.symbol}`,
-          "zh-CN": `${BASE_URL}/markets/${market.symbol}`,
-          "ko-KR": `${BASE_URL}/markets/${market.symbol}`,
-        },
+        languages: marketAlternates,
       },
     })
   }
