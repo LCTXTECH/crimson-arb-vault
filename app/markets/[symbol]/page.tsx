@@ -371,7 +371,4 @@ export default function MarketPage({ params }: { params: Promise<{ symbol: strin
   )
 }
 
-// Generate static params for all markets
-export function generateStaticParams() {
-  return VALID_MARKETS.map((symbol) => ({ symbol }))
-}
+

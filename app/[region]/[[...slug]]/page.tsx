@@ -1,6 +1,8 @@
 import { notFound } from "next/navigation"
 import { Metadata } from "next"
 import Link from "next/link"
+import Image from "next/image"
+import { SiteFooter } from "@/components/site-footer"
 
 const VALID_REGIONS = ["us", "uk", "sg", "hk", "ae", "de", "jp", "cn", "kr"]
 
@@ -122,7 +124,7 @@ export default async function RegionalPage({
     <div className="min-h-screen bg-background text-foreground">
       <header className="border-b border-border bg-card/50 backdrop-blur-sm sticky top-0 z-50">
         <div className="mx-auto flex h-14 max-w-7xl items-center justify-between px-4">
-          <Link href={`/${region}`} className="flex items-center gap-2">
+          <Link href="/" className="flex items-center gap-2">
             <div className="h-8 w-8 rounded-lg bg-crimson flex items-center justify-center">
               <span className="text-white font-bold text-sm">C</span>
             </div>
@@ -131,7 +133,7 @@ export default async function RegionalPage({
               {region.toUpperCase()}
             </span>
           </Link>
-          <nav className="flex items-center gap-4 text-sm">
+          <nav className="flex items-center gap-6 text-sm">
             <Link href={`/${region}/vault`} className="text-muted-foreground hover:text-foreground transition-colors">
               Vault
             </Link>
@@ -141,12 +143,29 @@ export default async function RegionalPage({
             <Link href={`/${region}/docs`} className="text-muted-foreground hover:text-foreground transition-colors">
               Docs
             </Link>
+            <Link
+              href={`/${region}/vault`}
+              className="rounded-lg bg-crimson px-4 py-2 text-sm font-medium text-white hover:bg-crimson-dark transition-colors"
+            >
+              Get Started
+            </Link>
           </nav>
         </div>
       </header>
 
-      <main className="mx-auto max-w-7xl px-4 py-12">
-        <div className="mb-8">
+      {/* Hero Banner */}
+      <section className="relative overflow-hidden">
+        <div className="absolute inset-0">
+          <Image
+            src="/images/hero-banner.jpg"
+            alt={`CrimsonArb AI-Powered Basis Trading - ${regionName}`}
+            fill
+            className="object-cover opacity-40"
+            priority
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-background/50 via-background/80 to-background" />
+        </div>
+        <div className="relative mx-auto max-w-7xl px-4 py-20">
           <div className="inline-flex items-center gap-2 rounded-full border border-crimson/30 bg-crimson/10 px-3 py-1 text-xs text-crimson mb-4">
             <span className="relative flex h-2 w-2">
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-crimson opacity-75"></span>
@@ -154,12 +173,21 @@ export default async function RegionalPage({
             </span>
             Optimized for {regionName}
           </div>
-          <h1 className="text-4xl font-bold tracking-tight mb-4">{pageTitle}</h1>
-          <p className="text-lg text-muted-foreground max-w-2xl">
+          <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-4 text-balance">{pageTitle}</h1>
+          <p className="text-lg text-muted-foreground max-w-2xl mb-8">
             Delta-neutral arbitrage vault powered by AgentSentry AI on Drift Protocol.
             Institutional-grade trading infrastructure optimized for {regionName} markets.
           </p>
+          <Link
+            href={`/${region}/vault`}
+            className="inline-flex items-center justify-center rounded-lg bg-crimson px-6 py-3 text-sm font-medium text-white hover:bg-crimson-dark transition-colors"
+          >
+            Get Started
+          </Link>
         </div>
+      </section>
+
+      <main className="mx-auto max-w-7xl px-4 py-12">
 
         <div className="grid gap-6 md:grid-cols-3 mb-12">
           <div className="rounded-lg border border-border bg-card p-6">
@@ -190,19 +218,7 @@ export default async function RegionalPage({
         </div>
       </main>
 
-      <footer className="border-t border-border py-8 mt-12">
-        <div className="mx-auto max-w-7xl px-4 flex flex-wrap justify-between gap-8 text-sm text-muted-foreground">
-          <div className="flex gap-6">
-            <Link href={`/${region}/about`} className="hover:text-foreground transition-colors">About</Link>
-            <Link href={`/${region}/security`} className="hover:text-foreground transition-colors">Security</Link>
-            <Link href={`/${region}/terms`} className="hover:text-foreground transition-colors">Terms</Link>
-            <Link href={`/${region}/privacy`} className="hover:text-foreground transition-colors">Privacy</Link>
-          </div>
-          <div>
-            &copy; {new Date().getFullYear()} CrimsonArb. All rights reserved.
-          </div>
-        </div>
-      </footer>
+      <SiteFooter region={region} />
     </div>
   )
 }

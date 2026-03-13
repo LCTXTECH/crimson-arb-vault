@@ -78,6 +78,11 @@ export async function generateMetadata({ params }: { params: Promise<{ symbol: s
   }
 }
 
+// Generate static params for all valid markets
+export function generateStaticParams() {
+  return ["sol-perp", "btc-perp", "eth-perp", "jto-perp", "wif-perp"].map((symbol) => ({ symbol }))
+}
+
 export default function MarketLayout({ children }: { children: React.ReactNode }) {
   return <>{children}</>
 }

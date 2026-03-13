@@ -66,24 +66,10 @@ export function middleware(request: NextRequest) {
     return response
   }
 
-  // Auto-redirect based on IP geolocation (only for initial visits)
-  const hasVisited = request.cookies.get("visited")?.value
-  if (!hasVisited && COUNTRY_TO_REGION[country]) {
-    const targetRegion = COUNTRY_TO_REGION[country]
-    const url = request.nextUrl.clone()
-    url.pathname = `/${targetRegion}${pathname}`
-    url.search = search
-
-    const redirectResponse = NextResponse.redirect(url, 302)
-    // Set cookie to prevent redirect loops
-    redirectResponse.cookies.set("visited", "true", {
-      maxAge: 60 * 60 * 24, // 24 hours
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "lax",
-    })
-    return redirectResponse
-  }
+  // DISABLED: Auto-redirect based on IP geolocation
+  // Users should land on the main homepage and can manually select their region
+  // Regional paths are still accessible via direct URLs (e.g., /us, /uk, /sg)
+  // The geo selector in the header allows users to switch regions
 
   return response
 }
