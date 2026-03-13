@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { generateAIReasoning, type DriftTradeData, type DriftMarketContext } from "@/lib/ai-reasoning"
 
 interface PendingTrade extends DriftTradeData {
@@ -27,6 +27,15 @@ const mockContext: DriftMarketContext = {
 export function ApprovalQueue({ trades, onApprove, onReject, clawEnabled }: ApprovalQueueProps) {
   const [expandedId, setExpandedId] = useState<string | null>(null)
   const [processing, setProcessing] = useState<string | null>(null)
+  const [mounted, setMounted] = useState(false)
+  const [, setTick] = useState(0)
+
+  useEffect(() => {
+    setMounted(true)
+    // Update countdown timer every second
+    const interval = setInterval(() => setTick(t => t + 1), 1000)
+    return () => clearInterval(interval)
+  }, [])
 
   const handleApprove = async (tradeId: string) => {
     setProcessing(tradeId)
@@ -160,7 +169,7 @@ export function ApprovalQueue({ trades, onApprove, onReject, clawEnabled }: Appr
                 {/* Timer */}
                 <div className="text-right flex-shrink-0">
                   <p className="text-xs text-muted-foreground">Expires in</p>
-                  <p className="text-sm font-mono text-warning">{getTimeRemaining(trade.expiresAt)}</p>
+                  <p className="text-sm font-mono text-warning">{mounted ? getTimeRemaining(trade.expiresAt) : "--:--"}</p>
                 </div>
               </div>
 
