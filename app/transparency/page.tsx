@@ -204,8 +204,8 @@ export default function TransparencyReportPage() {
                       borderRadius: "8px",
                     }}
                     labelStyle={{ color: COLORS.muted }}
-                    formatter={(value: number, name: string) => [
-                      `${value.toFixed(1)}%`,
+                    formatter={(value, name) => [
+                      `${Number(value).toFixed(1)}%`,
                       name === "crimsonArb" ? "CrimsonArb" : name === "passiveBasis" ? "Passive Basis" : "Alpha Spread",
                     ]}
                   />
