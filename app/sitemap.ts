@@ -52,6 +52,7 @@ const CORE_PAGES = [
   { path: "/terms", priority: 0.3, changeFrequency: "yearly" as const, images: [] },
   { path: "/privacy", priority: 0.3, changeFrequency: "yearly" as const, images: [] },
   { path: "/sandbox", priority: 0.8, changeFrequency: "daily" as const, images: [] },
+  { path: "/transparency", priority: 0.9, changeFrequency: "weekly" as const, images: [] },
 ]
 
 // Market pages - maps to /app/markets/[symbol]/page.tsx with full SEO
