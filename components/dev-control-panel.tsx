@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import { JobuSupplyMonitor } from "./jobu-supply-monitor"
 
 interface FeedbackEntry {
   id: string
@@ -267,10 +268,15 @@ export function DevControlPanel() {
               )}
             </div>
 
-            {/* Footer */}
-            <div className="p-4 border-t border-border bg-muted/30">
-              <div className="flex items-center justify-between text-xs font-mono text-muted-foreground">
-                <span>Network: DEVNET</span>
+{/* Jobu's Treasury Monitor */}
+      <div className="p-4 border-t border-border">
+        <JobuSupplyMonitor />
+      </div>
+
+      {/* Footer */}
+      <div className="p-4 border-t border-border bg-muted/30">
+        <div className="flex items-center justify-between text-xs font-mono text-muted-foreground">
+          <span>Network: DEVNET</span>
                 <span className="flex items-center gap-1">
                   <span className="w-1.5 h-1.5 rounded-full bg-success" />
                   Connected
