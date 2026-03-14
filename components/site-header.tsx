@@ -78,6 +78,12 @@ export function SiteHeader({ region, onGetStarted }: SiteHeaderProps) {
           >
             Analytics
           </Link>
+          <Link 
+            href="/transparency"
+            className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+          >
+            Transparency
+          </Link>
           <div className="relative group">
             <button className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1">
               Markets
@@ -148,6 +154,9 @@ export function SiteHeader({ region, onGetStarted }: SiteHeaderProps) {
             </Link>
             <Link href={`${basePath}/analytics`} className="text-sm font-medium text-muted-foreground hover:text-foreground">
               Analytics
+            </Link>
+            <Link href="/transparency" className="text-sm font-medium text-muted-foreground hover:text-foreground">
+              Transparency
             </Link>
             <Link href="/markets/sol-perp" className="text-sm font-medium text-muted-foreground hover:text-foreground">
               SOL-PERP Market

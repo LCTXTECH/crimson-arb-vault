@@ -14,6 +14,7 @@ import { DepthChart } from "@/components/depth-chart"
 import { SiteFooter } from "@/components/site-footer"
 import { DevControlPanel } from "@/components/dev-control-panel"
 import { SentryDecisionMatrix } from "@/components/sentry-decision-matrix"
+import { JobuRitualOverlay } from "@/components/jobu-ritual-overlay"
 
 // Devnet mock data with whale-sized positions
 const devnetTrades: DriftTradeData[] = [
@@ -563,6 +564,9 @@ export default function SandboxDashboard() {
 
       {/* Dev Control Panel - Sidebar for testing */}
       <DevControlPanel />
+
+      {/* Digital Jobu Easter Egg - Type "JOBU" to activate */}
+      <JobuRitualOverlay walletAddress="7xKXtg2CW87d97TXJSDpbD5jBkheTqA83TZRuJosgAsU" />
 
       {/* Footer */}
       <SiteFooter />

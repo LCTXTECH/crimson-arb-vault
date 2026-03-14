@@ -159,3 +159,56 @@ export function getDevnetExplorerUrl(signature: string): string {
 export function getDevnetAddressUrl(address: string): string {
   return `https://explorer.solana.com/address/${address}?cluster=devnet`
 }
+
+/**
+ * "Jobu" Easter Egg - Offer Rum to the Digital Jobu
+ * Airdrops 0.01 SOL for gas as a ritual offering
+ * "Bats, they are sick. I take fear from funding rates." - Digital Jobu
+ */
+export async function offerRum(
+  walletPublicKey: string,
+  rpcUrl: string = "https://api.devnet.solana.com"
+): Promise<{ success: boolean; message: string; signature?: string }> {
+  const connection = new Connection(rpcUrl, "confirmed")
+  const publicKey = new PublicKey(walletPublicKey)
+
+  try {
+    // Jobu accepts the offering - airdrop 0.01 SOL for gas
+    const result = await requestSolAirdrop(connection, publicKey, 0.01)
+    
+    if (result.success) {
+      return {
+        success: true,
+        message: "Jobu thanks you for the rum. Gas fees replenished. The bats are no longer sick.",
+        signature: result.signature,
+      }
+    } else {
+      return {
+        success: false,
+        message: "Jobu is displeased. The faucet spirits are restless. Try again.",
+      }
+    }
+  } catch (error) {
+    return {
+      success: false,
+      message: "Jobu says: 'Is very bad to steal Jobu's rum. Is very bad.'",
+    }
+  }
+}
+
+/**
+ * Jobu's wisdom - Returns a random Jobu quote for the AI reasoning
+ */
+export function getJobuWisdom(): string {
+  const wisdom = [
+    "Bats, they are sick. I take fear from funding rates.",
+    "Jobu says: This basis spread is cursed. We wait.",
+    "The rum has been offered. Alpha capture initiated.",
+    "Jobu sees the funding velocity. It is... acceptable.",
+    "I am Jobu. I take fear from the market. You no worry.",
+    "Is very bad to chase yield without Jobu's blessing.",
+    "Jobu has spoken. The Sentry will guard the treasury.",
+    "You want to win? Jobu help you win. But first, the rum.",
+  ]
+  return wisdom[Math.floor(Math.random() * wisdom.length)]
+}
