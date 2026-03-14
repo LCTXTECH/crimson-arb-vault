@@ -1,7 +1,7 @@
 # CrimsonArb Backend Task List
 
-**Last Updated:** March 13, 2026  
-**Status:** Devnet Sandbox Deployed, Database Complete
+**Last Updated:** March 14, 2026  
+**Status:** Intelligence Layer Complete - Ready for Judge Demo
 
 ---
 
@@ -320,6 +320,9 @@ const { data, error } = await supabase
 | **Feedback API** | `/app/api/feedback/route.ts` |
 | **AI Decision Logger** | `/lib/ai-decision-logger.ts` |
 | **Decisions API** | `/app/api/decisions/route.ts` |
+| **Decisions Seed API** | `/app/api/decisions/seed/route.ts` |
+| **Sentry Decision Matrix** | `/components/sentry-decision-matrix.tsx` |
+| **Seed Script** | `/scripts/seed-ai-decisions.ts` |
 | **Devnet Env Template** | `/.env.local.example` |
 | Database Migration | `/scripts/001-initial-schema.sql` |
 | Anchor Config | `/Anchor.toml` |
@@ -329,13 +332,31 @@ const { data, error } = await supabase
 
 ---
 
-## Human Task Checklist: 5:30 AM Devnet Launch
+## Human Task Checklist: Final Pre-Launch (Updated)
 
+### Immediate (P0)
+- [ ] **Seed Intelligence Data** - `POST /api/decisions/seed` to populate 13 AI decisions
+- [ ] **Verify Decision Matrix** - Visit `/sandbox` and confirm hex grid displays decisions
+- [ ] **Enable Real-time** - Supabase Dashboard: Toggle 'Real-time' for `ai_decisions` table
+
+### Environment Setup
 - [ ] **Step 1: Vercel Env Switch** - Set `NEXT_PUBLIC_SOLANA_NETWORK=devnet` in Vercel
 - [ ] **Step 2: Deploy Anchor Programs** - Run `anchor deploy` on devnet
 - [ ] **Step 3: Seed the Sentry** - Use Drift faucet to fund vault with $1M mock USDC
 - [ ] **Step 4: Test Sandbox** - Visit `crimsonarb.com/sandbox` and verify UI
 - [ ] **Step 5: Reach Out** - Share sandbox link in Drift/Ranger Discord `#dev-chat`
 
+### Intelligence Layer Demo (For Judges)
+The Sentry Decision Matrix proves the AI has **Discipline** by visualizing:
+- **Amber (SKIP)**: Trades avoided due to funding decay, low confidence
+- **Crimson (GUARD)**: Risk circuit breaker activations
+- **Green (EXECUTE)**: High-conviction basis captures
+- **Gray (DEFER)**: Borderline setups awaiting signal convergence
+
+**API Endpoints:**
+- `GET /api/decisions` - Fetch recent AI decisions
+- `GET /api/decisions?analytics=true` - Decision statistics
+- `POST /api/decisions/seed` - Populate demo data (13 decisions)
+
 **Pitch Template:**
-> "Hey @DriftLabs team, we've built an AI-augmented basis vault on Devnet. We've given you a pre-funded subaccount to test our delegated signer execution. Check it out at crimsonarb.com/sandbox."
+> "Hey @DriftLabs team, we've built an AI-augmented basis vault on Devnet. Our Sentry Brain shows *why* it skipped 72% of opportunities—visualized in real-time. Check it out at crimsonarb.com/sandbox."
