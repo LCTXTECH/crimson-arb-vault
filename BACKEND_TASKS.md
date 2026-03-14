@@ -216,10 +216,36 @@ anchor deploy --program-name custom_adaptor_program
 - [x] **`public.dev_feedback`** table
 - [x] **`public.sandbox_sessions`** table
 
-### 4.4 Security & Performance
+### 4.4 AI Decisions Table (Migration: `add_ai_decisions_table`) - NEW
+- [x] **`public.ai_decisions`** table - Logs ALL AI reasoning including non-trades
+  - `decision_type`: EXECUTE, SKIP, GUARD, DEFER
+  - `decision_reason`: Human-readable explanation
+  - Market context: funding_rate, predicted_funding, basis_spread, spot/perp prices
+  - AI data: confidence_score, risk_score, alpha_decay_hours, thought_process[]
+  - Skip data: skip_reasons[], risk_factors (JSONB)
+  - Trade data: trade_id (FK), proposed_side/size/leverage, expected_yield
+- [x] Added `decision_id` foreign key to `trade_actions`
+- [x] RLS enabled: publicly viewable, service can insert
+- [x] Indexes on type, symbol, created_at, confidence
+
+### 4.5 AI Decision Logging Library (`/lib/ai-decision-logger.ts`)
+- [x] `logAIDecision()` - Full decision logging
+- [x] `logSkipDecision()` - Log when AI skips a trade opportunity
+- [x] `logGuardDecision()` - Log when risk guard triggers
+- [x] `logExecuteDecision()` - Log executed trades with decision context
+- [x] `getRecentDecisions()` - Fetch decision history
+- [x] `getDecisionAnalytics()` - Get stats for investor reports
+- [x] `SKIP_REASONS` constants for consistency
+
+### 4.6 Decisions API (`/app/api/decisions/route.ts`)
+- [x] GET: Fetch recent decisions with filtering
+- [x] GET with `?analytics=true`: Get decision statistics
+- [x] POST: Log new AI decisions (EXECUTE, SKIP, GUARD, DEFER)
+
+### 4.7 Security & Performance
 - [x] Row Level Security (RLS) enabled on all tables
 - [x] Indexes for query optimization
-- [x] Real-time enabled for `trade_actions` and `dev_feedback`
+- [x] Real-time enabled for `trade_actions`, `dev_feedback`, and `ai_decisions`
 
 ### 4.5 Usage Example:
 ```typescript
@@ -292,6 +318,8 @@ const { data, error } = await supabase
 | **Drift Faucet** | `/lib/drift/faucet.ts` |
 | **Solana Config** | `/lib/solana-config.ts` |
 | **Feedback API** | `/app/api/feedback/route.ts` |
+| **AI Decision Logger** | `/lib/ai-decision-logger.ts` |
+| **Decisions API** | `/app/api/decisions/route.ts` |
 | **Devnet Env Template** | `/.env.local.example` |
 | Database Migration | `/scripts/001-initial-schema.sql` |
 | Anchor Config | `/Anchor.toml` |
