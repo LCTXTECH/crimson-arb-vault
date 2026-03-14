@@ -322,7 +322,7 @@ export default function TransparencyReportPage() {
                         border: `1px solid ${COLORS.border}`,
                         borderRadius: "8px",
                       }}
-                      formatter={(value: number) => [`${value.toFixed(2)}%`, "Drawdown"]}
+                      formatter={(value) => [`${Number(value).toFixed(2)}%`, "Drawdown"]}
                     />
                     <Legend />
                     <Area
