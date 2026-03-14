@@ -13,6 +13,7 @@ import { SentryBrain } from "@/components/sentry-brain"
 import { DepthChart } from "@/components/depth-chart"
 import { SiteFooter } from "@/components/site-footer"
 import { DevControlPanel } from "@/components/dev-control-panel"
+import { SentryDecisionMatrix } from "@/components/sentry-decision-matrix"
 
 // Devnet mock data with whale-sized positions
 const devnetTrades: DriftTradeData[] = [
@@ -427,6 +428,9 @@ export default function SandboxDashboard() {
 
             {/* Depth Chart */}
             <DepthChart symbol="SOL-PERP" sentryTargetPrice={142.85} sentryTargetSide="SELL" />
+
+            {/* Sentry Decision Matrix - The Intelligence Layer */}
+            <SentryDecisionMatrix />
 
             {/* Recent Devnet Trades */}
             <div>
