@@ -94,10 +94,32 @@ export default function TransparencyReportPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsSubmitting(true)
-    // Simulate form submission
-    await new Promise((resolve) => setTimeout(resolve, 1500))
-    setSubmitted(true)
-    setIsSubmitting(false)
+    
+    try {
+      // Send to API route which forwards to info@bcblock.net
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          ...formData,
+          to: "info@bcblock.net",
+          subject: `CrimsonArb Inquiry: ${formData.company || formData.name}`,
+          source: "transparency-report",
+        }),
+      })
+      
+      if (!response.ok) throw new Error("Failed to submit")
+      
+      setSubmitted(true)
+    } catch (error) {
+      console.error("Form submission error:", error)
+      // Fallback to mailto if API fails
+      const mailtoLink = `mailto:info@bcblock.net?subject=${encodeURIComponent(`CrimsonArb Inquiry: ${formData.company || formData.name}`)}&body=${encodeURIComponent(`Name: ${formData.name}\nEmail: ${formData.email}\nCompany: ${formData.company}\nAUM Range: ${formData.aum}\n\nMessage:\n${formData.message}`)}`
+      window.open(mailtoLink, "_blank")
+      setSubmitted(true)
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   return (
