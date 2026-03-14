@@ -360,3 +360,51 @@ The Sentry Decision Matrix proves the AI has **Discipline** by visualizing:
 
 **Pitch Template:**
 > "Hey @DriftLabs team, we've built an AI-augmented basis vault on Devnet. Our Sentry Brain shows *why* it skipped 72% of opportunities—visualized in real-time. Check it out at crimsonarb.com/sandbox."
+
+---
+
+## E2E Devnet Test Protocol (05:30 AM Major League Dry Run)
+
+### Test 1: Database/API Pipe Test
+```bash
+curl -X POST https://crimsonarb.com/api/decisions/seed
+```
+**PASS:** Decision Matrix Hex Grid pulses with Green/Amber/Crimson colors
+
+### Test 2: Jobu Gas Test (Treasury Transfer)
+- **Action:** Type "JOBU" on keyboard in Sandbox, click "Offer Rum"
+- **PASS:** Receive 0.01 SOL in wallet, Jobu Supply Monitor ticks down
+- **Confirms:** `JOBU_TREASURY_SECRET_KEY` loaded correctly
+
+### Test 3: Drift Delegated Signer Test
+- **Action:** Click "Enable Sentry Shield" in Sandbox
+- **PASS:** Wallet prompts to delegate to `NEXT_PUBLIC_CRIMSON_DELEGATE_PUBKEY`
+- **Confirms:** AI now has "the keys to the car"
+
+### Test 4: AI Reasoning Loop
+- **Action:** Click "Simulate Funding Spike" in Dev Control Panel
+- **PASS:** `ai_decisions` table logs a SKIP or EXECUTE entry with confidence score
+- **Confirms:** Full AI reasoning pipeline is operational
+
+---
+
+## Vercel Deployment Checklist
+
+| Setting | Location | Value |
+|---------|----------|-------|
+| **Function Region** | Settings > Functions | `iad1` (Washington DC) or `sfo1` |
+| **Real-time Tables** | Supabase > Database > Replication | `ai_decisions`, `trade_actions` enabled |
+| **CORS Whitelist** | Supabase > API Settings | `https://crimsonarb.com` |
+
+---
+
+## Master .env Reference
+
+See `/.env.local.example` for the complete manifest. Critical P0 variables:
+
+| Variable | Purpose | Source |
+|----------|---------|--------|
+| `JOBU_TREASURY_SECRET_KEY` | Gas wallet for devnet airdrops | `solana-keygen new` |
+| `JWT_SECRET` | Auth token signing | `openssl rand -base64 32` |
+| `SUPABASE_SERVICE_ROLE_KEY` | Backend DB access | Vercel Integration |
+| `NEXT_PUBLIC_CRIMSON_DELEGATE_PUBKEY` | AI execution wallet | Generate & fund on devnet |
