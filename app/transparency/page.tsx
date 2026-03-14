@@ -277,7 +277,7 @@ export default function TransparencyReportPage() {
                         border: `1px solid ${COLORS.border}`,
                         borderRadius: "8px",
                       }}
-                      formatter={(value: number) => [`${value}%`, "Decisions"]}
+                      formatter={(value) => [`${Number(value)}%`, "Decisions"]}
                     />
                   </PieChart>
                 </ResponsiveContainer>
