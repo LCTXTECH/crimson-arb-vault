@@ -3,7 +3,7 @@
 **Project:** CrimsonArb - AI-Augmented Basis Trade Vault  
 **Client:** Bayou City Blockchain (BCBlock)  
 **Date:** March 16, 2026  
-**Status:** Devnet Sandbox Complete - Ready for Ranger Finance Hackathon Demo
+**Status:** Devnet Sandbox Complete - Ready for 7-Day Simulated Trading Period
 
 ---
 
@@ -15,7 +15,36 @@ CrimsonArb is an institutional-grade delta-neutral yield vault that uses AI ("Se
 - Dashboard: `https://crimsonarb.com`
 - Devnet Sandbox: `https://crimsonarb.com/sandbox`
 - Transparency Report: `https://crimsonarb.com/transparency`
-- API Docs: `https://crimsonarb.com/docs/api`
+
+---
+
+## Critical Path Items (Next Build Priorities)
+
+### P0 - Immediate (Blocks Demo)
+1. **Privy Google OAuth Migration** - Follow `splitsol.net` auth-context.tsx exactly
+2. **Verify AgentSentry Integration** - Confirm `/api/claw/execute` calls `agentsentry.net/api/sentry/check-in` before any Drift execution
+3. **OpenClaw Metrics Endpoint** - `GET /api/openclaw/metrics` for VPS content generation
+4. **Webhook Receiver** - `POST /api/openclaw/webhook` for ecosystem treasury notifications
+5. **SPLit + RapidPay Bridge** - Auto-deposit when Phase 2 triggers ($50K combined volume)
+
+### P1 - Missing Environment Variables
+| Variable | Purpose | How to Generate |
+|----------|---------|-----------------|
+| `JOBU_TREASURY_SECRET_KEY` | Gas wallet for devnet airdrops | `solana-keygen new` |
+| `JWT_SECRET` | Auth token signing | `openssl rand -base64 32` |
+| `NEXT_PUBLIC_CRIMSON_DELEGATE_PUBKEY` | AI execution wallet | Generate & fund on devnet |
+| `OPENCLAW_WEBHOOK_TOKEN` | Shared with VPS at 83.229.35.199 | Generate shared secret |
+| `AGENTSENTRY_API_KEY` | Sentry check-in authorization | Request from AgentSentry |
+
+---
+
+## Golden Rules (Non-Negotiable)
+
+1. **DEVNET ONLY** until security checklist complete
+2. **AgentSentry MUST APPROVE** before any Drift execution
+3. **Never remove "Proof of No-Trade"** - it's the institutional moat
+4. **GUARD decisions always abort** - no overrides permitted
+5. **$10K initial mainnet cap** is non-negotiable
 
 ---
 
@@ -61,6 +90,24 @@ CrimsonArb is an institutional-grade delta-neutral yield vault that uses AI ("Se
 
 ---
 
+## BCBlock Ecosystem Integration
+
+### Sister Projects
+| Project | Domain | Integration Point |
+|---------|--------|-------------------|
+| **SPLit** | splitsol.net | Auth context, treasury routing |
+| **RapidPay** | rapidpay.io | Payment triggers for Phase 2 |
+| **OpenClaw** | VPS 83.229.35.199 | Webhook notifications, metrics |
+| **AgentSentry** | agentsentry.net | Trade approval gateway |
+
+### Shared Infrastructure
+- **Supabase Project:** `yvctjdhzytvmvlcfuypk`
+- **Vercel Team:** LCTXTECH
+- **GitHub Org:** github.com/LCTXTECH
+- **Domain Registrar:** Managed via Vercel
+
+---
+
 ## File Structure
 
 ### Frontend Pages (14 pages)
@@ -73,12 +120,8 @@ CrimsonArb is an institutional-grade delta-neutral yield vault that uses AI ("Se
 | `/vault` | `app/vault/page.tsx` | Vault details and deposit/withdraw |
 | `/markets/[symbol]` | `app/markets/[symbol]/page.tsx` | Individual market pages |
 | `/docs/*` | `app/docs/*/page.tsx` | API docs, getting started, Sentry AI docs |
-| `/about` | `app/about/page.tsx` | About BCBlock |
-| `/security` | `app/security/page.tsx` | Security practices |
-| `/terms` | `app/terms/page.tsx` | Terms of service |
-| `/privacy` | `app/privacy/page.tsx` | Privacy policy |
 
-### Components (16 components)
+### Components (18 components)
 | Component | Purpose |
 |-----------|---------|
 | `sentry-brain.tsx` | AI visualization with neural network animation |
@@ -90,15 +133,10 @@ CrimsonArb is an institutional-grade delta-neutral yield vault that uses AI ("Se
 | `dev-control-panel.tsx` | Sandbox testing controls |
 | `jobu-ritual-overlay.tsx` | Easter egg (type "JOBU" to activate) |
 | `jobu-supply-monitor.tsx` | Treasury gas level monitor |
-| `investor-transparency-report.tsx` | PDF-ready investor report |
-| `geo-selector.tsx` | Region selector for compliance |
-| `onboarding-modal.tsx` | User onboarding flow |
-| `execution-success-toast.tsx` | Trade confirmation notifications |
 | `site-header.tsx` | Navigation header |
 | `site-footer.tsx` | Footer with social links |
-| `structured-data.tsx` | SEO JSON-LD schemas |
 
-### API Routes (9 endpoints)
+### API Routes (10 endpoints)
 | Endpoint | Method | Description |
 |----------|--------|-------------|
 | `/api/decisions` | GET/POST | AI decision logging and retrieval |
@@ -119,9 +157,6 @@ CrimsonArb is an institutional-grade delta-neutral yield vault that uses AI ("Se
 | `drift/faucet.ts` | Devnet SOL/USDC faucet + Jobu ritual |
 | `solana-config.ts` | Network configuration helper |
 | `transaction.ts` | Versioned transaction builder |
-| `seo-config.ts` | SEO metadata and structured data |
-| `auth-config.ts` | OAuth provider configuration |
-| `use-auth.ts` / `use-geo.ts` | React hooks |
 
 ### Solana Programs (Anchor/Rust)
 | Program | Location | Description |
@@ -144,34 +179,30 @@ CrimsonArb is an institutional-grade delta-neutral yield vault that uses AI ("Se
 | `sandbox_sessions` | Devnet tester sessions | Public read/write |
 | `contact_inquiries` | Lead gen form submissions | Insert only |
 
-### Key Migrations Applied
-1. `initial_schema` - Core tables (profiles, trade_actions, vault_state)
-2. `add_dev_feedback_table` - Sandbox tables
-3. `add_ai_decisions_table` - Intelligence layer
-4. `add_contact_inquiries_table` - Lead generation
-
 ---
 
-## Environment Variables
+## E2E Devnet Test Protocol
 
-See `/.env.local.example` for the complete manifest. Critical variables:
-
-### P0 - Critical (Blocks Launch)
+### Test 1: Database/API Pipe Test
 ```bash
-JOBU_TREASURY_SECRET_KEY=           # Gas wallet for devnet airdrops
-JWT_SECRET=                         # Auth token signing
-SUPABASE_URL=                       # Auto-configured via integration
-SUPABASE_SERVICE_ROLE_KEY=          # Auto-configured via integration
-NEXT_PUBLIC_SUPABASE_ANON_KEY=      # Auto-configured via integration
+curl -X POST https://crimsonarb.com/api/decisions/seed
 ```
+**PASS:** Decision Matrix Hex Grid pulses with Green/Amber/Crimson colors
 
-### P1 - Network Configuration
-```bash
-NEXT_PUBLIC_SOLANA_NETWORK=devnet
-NEXT_PUBLIC_SOLANA_RPC_URL=https://api.devnet.solana.com
-NEXT_PUBLIC_DRIFT_PROGRAM_ID=dRiftyHA39MWEi3m9aunc5MzRF1JYuBsbn6VPcn33UH
-NEXT_PUBLIC_CRIMSON_DELEGATE_PUBKEY=  # AI execution wallet
-```
+### Test 2: Jobu Gas Test (Treasury Transfer)
+- **Action:** Type "JOBU" on keyboard in Sandbox, click "Offer Rum"
+- **PASS:** Receive 0.01 SOL in wallet, Jobu Supply Monitor ticks down
+- **Confirms:** `JOBU_TREASURY_SECRET_KEY` loaded correctly
+
+### Test 3: Drift Delegated Signer Test
+- **Action:** Click "Enable Sentry Shield" in Sandbox
+- **PASS:** Wallet prompts to delegate to `NEXT_PUBLIC_CRIMSON_DELEGATE_PUBKEY`
+- **Confirms:** AI now has "the keys to the car"
+
+### Test 4: AI Reasoning Loop
+- **Action:** Click "Simulate Funding Spike" in Dev Control Panel
+- **PASS:** `ai_decisions` table logs a SKIP or EXECUTE entry with confidence score
+- **Confirms:** Full AI reasoning pipeline is operational
 
 ---
 
@@ -179,9 +210,8 @@ NEXT_PUBLIC_CRIMSON_DELEGATE_PUBKEY=  # AI execution wallet
 
 ### Quick Start
 1. Visit `https://crimsonarb.com/sandbox`
-2. Click "Devnet" button in header (or go directly to `/sandbox`)
-3. See $100k mock USDC balance
-4. Click "Mint Mock Alpha" to add $50k more
+2. See $100k mock USDC balance
+3. Click "Mint Mock Alpha" to add $50k more
 
 ### Intelligence Layer Demo
 1. Call `POST /api/decisions/seed` to populate 13 AI decisions
@@ -202,31 +232,34 @@ NEXT_PUBLIC_CRIMSON_DELEGATE_PUBKEY=  # AI execution wallet
 
 ---
 
+## Post-Hackathon Roadmap
+
+### Week 1-2: Devnet Validation
+- [ ] Run 7 days of simulated trades on devnet
+- [ ] Collect feedback from Drift/Ranger devs
+- [ ] Optimize Predictive Decay Engine based on data
+- [ ] Complete SPLit OAuth migration (Privy)
+
+### Week 3: Security Audit
+- [ ] Complete AgentSentry integration (all 4 endpoints)
+- [ ] Implement proper session management with Privy
+- [ ] Add rate limiting to API endpoints
+- [ ] Security review of delegated signer flow
+
+### Week 4: Mainnet Preparation
+- [ ] Deploy Anchor programs to mainnet-beta
+- [ ] Configure production RPC (Helius/Triton)
+- [ ] Enable real deposits with caps ($10k initial)
+- [ ] Launch Phase 2 trigger monitoring
+
+---
+
 ## Social Links
 
 - **X (Twitter):** https://x.com/bcblockhtx
 - **GitHub:** https://github.com/LCTXTECH
 - **Discord:** https://discord.gg/V2DksdSE
 - **Contact:** info@bcblock.net
-
----
-
-## Next Steps (Post-Hackathon)
-
-### Week 1-2: Devnet Validation
-- [ ] Run 7 days of simulated trades on devnet
-- [ ] Collect feedback from Drift/Ranger devs
-- [ ] Optimize Predictive Decay Engine based on data
-
-### Week 3: Security Audit
-- [ ] Complete AgentSentry integration
-- [ ] Implement proper session management
-- [ ] Add rate limiting to API endpoints
-
-### Week 4: Mainnet Preparation
-- [ ] Deploy Anchor programs to mainnet-beta
-- [ ] Configure production RPC (Helius/Triton)
-- [ ] Enable real deposits with caps ($10k initial)
 
 ---
 
