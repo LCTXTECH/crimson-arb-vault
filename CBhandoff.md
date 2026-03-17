@@ -110,22 +110,27 @@ CrimsonArb is an institutional-grade delta-neutral yield vault that uses AI ("Se
 
 ## File Structure
 
-### Frontend Pages (14 pages)
+### Frontend Pages (15 pages)
 | Route | File | Description |
 |-------|------|-------------|
-| `/` | `app/page.tsx` | Main dashboard with Sentry Brain, positions, approval queue |
-| `/sandbox` | `app/sandbox/page.tsx` | Devnet testing environment ($100k mock USDC) |
+| `/` | `app/page.tsx` | Main dashboard with Sentry Brain, AgentSentry widget, metrics |
+| `/sandbox` | `app/sandbox/page.tsx` | Devnet testing with auto-running LiveSimulationV2 |
 | `/transparency` | `app/transparency/page.tsx` | Investor report with charts + lead gen form |
+| `/proof-of-no-trade` | `app/proof-of-no-trade/page.tsx` | Manifesto page - our key differentiator |
 | `/analytics` | `app/analytics/page.tsx` | Performance analytics |
 | `/vault` | `app/vault/page.tsx` | Vault details and deposit/withdraw |
 | `/markets/[symbol]` | `app/markets/[symbol]/page.tsx` | Individual market pages |
 | `/docs/*` | `app/docs/*/page.tsx` | API docs, getting started, Sentry AI docs |
 
-### Components (18 components)
+### Components (25 components)
 | Component | Purpose |
 |-----------|---------|
 | `sentry-brain.tsx` | AI visualization with neural network animation |
 | `sentry-decision-matrix.tsx` | Hex grid showing AI EXECUTE/SKIP/GUARD decisions |
+| `live-simulation-v2.tsx` | Auto-running 45s simulation for judges (5 decisions) |
+| `why-we-skip.tsx` | "Proof of No-Trade" section with last 10 skips |
+| `agent-sentry-status.tsx` | Live AgentSentry status widget (30s polling) |
+| `institutional-metrics.tsx` | Performance metrics card (APY, Sharpe, Drawdown) |
 | `approval-queue.tsx` | Trade approval interface with countdown timers |
 | `audit-trail-drawer.tsx` | Expandable execution log |
 | `depth-chart.tsx` | Order book depth visualization |
@@ -136,11 +141,12 @@ CrimsonArb is an institutional-grade delta-neutral yield vault that uses AI ("Se
 | `site-header.tsx` | Navigation header |
 | `site-footer.tsx` | Footer with social links |
 
-### API Routes (10 endpoints)
+### API Routes (11 endpoints)
 | Endpoint | Method | Description |
 |----------|--------|-------------|
 | `/api/decisions` | GET/POST | AI decision logging and retrieval |
 | `/api/decisions/seed` | POST | Populate demo data (13 AI decisions) |
+| `/api/sentry/status` | GET | AgentSentry status check (polls every 30s) |
 | `/api/feedback` | GET/POST | Developer feedback for sandbox |
 | `/api/contact` | POST | Lead gen form → info@bcblock.net |
 | `/api/jobu/balance` | GET | Treasury wallet balance check |
@@ -208,14 +214,29 @@ curl -X POST https://crimsonarb.com/api/decisions/seed
 
 ## Demo Checklist (For Judges)
 
-### Quick Start
+### Quick Start (Zero-Click Demo)
 1. Visit `https://crimsonarb.com/sandbox`
-2. See $100k mock USDC balance
-3. Click "Mint Mock Alpha" to add $50k more
+2. **Wait 3 seconds** - LiveSimulationV2 auto-starts
+3. Watch 5 AI decisions appear over 45 seconds
+4. See AgentSentry approval animation on EXECUTE decisions
+5. Final state: "MONITORING - System Active"
+
+### Main Dashboard Features
+1. Visit `https://crimsonarb.com`
+2. **AgentSentry Status Widget** - Shows ACTIVE/ELEVATED/CIRCUIT OPEN
+3. **Institutional Metrics Card** - APY, Sharpe, Drawdown, Skip Rate
+4. **"Why We Skip" Section** - Last 10 SKIP decisions with reasoning
+
+### Proof of No-Trade Page
+1. Visit `https://crimsonarb.com/proof-of-no-trade`
+2. See the manifesto: "MOST VAULTS HIDE THEIR INACTION"
+3. Interactive skip reasons breakdown with hover tooltips
+4. Live decision feed from last 24 hours
+5. Comparison table: Other Vaults vs CrimsonARB
 
 ### Intelligence Layer Demo
 1. Call `POST /api/decisions/seed` to populate 13 AI decisions
-2. View the **Sentry Decision Matrix** hex grid
+2. View the **Sentry Decision Matrix** hex grid (7x5 with market labels)
 3. Click hex cells to see AI reasoning for each decision
 4. Filter by EXECUTE (green), SKIP (amber), GUARD (crimson)
 
@@ -228,6 +249,8 @@ curl -X POST https://crimsonarb.com/api/decisions/seed
 - **"Proof of No-Trade"**: We log WHY we skip 72% of opportunities
 - **Funding Decay Prediction**: AI predicts when alpha will decay
 - **Risk Circuit Breakers**: GUARD decisions prevent bad entries
+- **AgentSentry Integration**: Visible security layer approval
+- **Institutional Metrics**: Sharpe 2.4, 0% drawdown (delta neutral)
 - **Institutional UI**: Hex grid, heatmaps, depth charts
 
 ---
