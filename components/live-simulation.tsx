@@ -112,6 +112,14 @@ export function LiveSimulation({ onDecisionAdded, onSimulationComplete }: LiveSi
       setDecisions(prev => [...prev, newDecision])
       setCurrentIndex(prev => prev + 1)
       
+      // Trigger AgentSentry check on EXECUTE decisions
+      if (script.type === "EXECUTE" && typeof window !== "undefined") {
+        const triggerCheck = (window as unknown as { triggerAgentSentryCheck?: () => Promise<void> }).triggerAgentSentryCheck
+        if (triggerCheck) {
+          triggerCheck()
+        }
+      }
+      
       setStats(prev => ({
         evaluated: prev.evaluated + 1,
         executed: script.type === "EXECUTE" ? prev.executed + 1 : prev.executed,
