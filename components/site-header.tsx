@@ -90,6 +90,12 @@ export function SiteHeader({ region, onGetStarted }: SiteHeaderProps) {
           >
             Proof of No-Trade
           </Link>
+          <Link 
+            href="/mainnet-roadmap"
+            className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+          >
+            Roadmap
+          </Link>
           <div className="relative group">
             <button className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1">
               Markets
@@ -163,6 +169,12 @@ export function SiteHeader({ region, onGetStarted }: SiteHeaderProps) {
             </Link>
             <Link href="/transparency" className="text-sm font-medium text-muted-foreground hover:text-foreground">
               Transparency
+            </Link>
+            <Link href="/proof-of-no-trade" className="text-sm font-medium text-primary hover:text-primary/80">
+              Proof of No-Trade
+            </Link>
+            <Link href="/mainnet-roadmap" className="text-sm font-medium text-muted-foreground hover:text-foreground">
+              Roadmap
             </Link>
             <Link href="/markets/sol-perp" className="text-sm font-medium text-muted-foreground hover:text-foreground">
               SOL-PERP Market

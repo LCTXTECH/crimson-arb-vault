@@ -239,10 +239,41 @@ export function LiveSimulationV2() {
 
       {/* Main Grid: Hex Grid + Decision Cards */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Hex Grid (7x5 = 35 hexes) */}
+        {/* Hex Grid - 5x3 on mobile, 7x5 on desktop */}
         <div className="bg-card border border-border rounded-lg p-4">
           <h3 className="text-sm font-mono text-muted-foreground mb-4 uppercase tracking-wider">Market Activity Grid</h3>
-          <div className="grid grid-cols-7 gap-1">
+          {/* Mobile Grid (5x3 = 15 hexes) */}
+          <div className="grid grid-cols-5 gap-1.5 md:hidden">
+            {Array.from({ length: 15 }).map((_, i) => {
+              const desktopIndex = Math.floor(i / 5) * 7 + (i % 5)
+              const activeType = activeHexes.get(desktopIndex)
+              const marketIndex = Math.floor(i / 5)
+              const isFirstInRow = i % 5 === 0
+              
+              return (
+                <motion.div
+                  key={i}
+                  className={`
+                    aspect-square rounded-sm flex items-center justify-center text-xs font-mono min-h-[44px]
+                    ${activeType ? `${getHexColor(activeType)} shadow-lg` : "bg-muted/30"}
+                    transition-all duration-500
+                  `}
+                  animate={activeType ? { scale: [1, 1.1, 1] } : {}}
+                  transition={{ duration: 0.5 }}
+                >
+                  {isFirstInRow && MARKET_LABELS[marketIndex] ? (
+                    <span className={activeType ? "text-white font-bold" : "text-muted-foreground"}>
+                      {MARKET_LABELS[marketIndex]}
+                    </span>
+                  ) : activeType ? (
+                    <span className="text-white">{getTypeIcon(activeType)}</span>
+                  ) : null}
+                </motion.div>
+              )
+            })}
+          </div>
+          {/* Desktop Grid (7x5 = 35 hexes) */}
+          <div className="hidden md:grid grid-cols-7 gap-1">
             {Array.from({ length: 35 }).map((_, i) => {
               const activeType = activeHexes.get(i)
               const marketIndex = Math.floor(i / 7)
