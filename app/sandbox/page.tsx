@@ -15,6 +15,7 @@ import { SiteFooter } from "@/components/site-footer"
 import { DevControlPanel } from "@/components/dev-control-panel"
 import { SentryDecisionMatrix } from "@/components/sentry-decision-matrix"
 import { JobuRitualOverlay } from "@/components/jobu-ritual-overlay"
+import { LiveSimulation } from "@/components/live-simulation"
 
 // Devnet mock data with whale-sized positions
 const devnetTrades: DriftTradeData[] = [
@@ -429,6 +430,9 @@ export default function SandboxDashboard() {
 
             {/* Depth Chart */}
             <DepthChart symbol="SOL-PERP" sentryTargetPrice={142.85} sentryTargetSide="SELL" />
+
+            {/* Live Simulation - Auto-runs on page load */}
+            <LiveSimulation />
 
             {/* Sentry Decision Matrix - The Intelligence Layer */}
             <SentryDecisionMatrix />
