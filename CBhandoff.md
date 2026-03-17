@@ -110,7 +110,7 @@ CrimsonArb is an institutional-grade delta-neutral yield vault that uses AI ("Se
 
 ## File Structure
 
-### Frontend Pages (17 pages)
+### Frontend Pages (18 pages)
 | Route | File | Description |
 |-------|------|-------------|
 | `/` | `app/page.tsx` | Main dashboard with Sentry Brain, AgentSentry widget, metrics |
@@ -118,6 +118,7 @@ CrimsonArb is an institutional-grade delta-neutral yield vault that uses AI ("Se
 | `/transparency` | `app/transparency/page.tsx` | Investor report with charts + lead gen form |
 | `/proof-of-no-trade` | `app/proof-of-no-trade/page.tsx` | Manifesto page - our key differentiator |
 | `/whitepaper` | `app/whitepaper/page.tsx` | Full technical whitepaper with sticky TOC |
+| `/judges` | `app/judges/page.tsx` | Hackathon submission page (noindex) |
 | `/mainnet-roadmap` | `app/mainnet-roadmap/page.tsx` | Deployment timeline + conservative launch params |
 | `/analytics` | `app/analytics/page.tsx` | Performance analytics |
 | `/vault` | `app/vault/page.tsx` | Vault details and deposit/withdraw |
