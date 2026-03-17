@@ -84,6 +84,12 @@ export function SiteHeader({ region, onGetStarted }: SiteHeaderProps) {
           >
             Transparency
           </Link>
+          <Link 
+            href="/proof-of-no-trade"
+            className="text-sm font-medium text-primary hover:text-primary/80 transition-colors"
+          >
+            Proof of No-Trade
+          </Link>
           <div className="relative group">
             <button className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1">
               Markets

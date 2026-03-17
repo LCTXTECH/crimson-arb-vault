@@ -16,6 +16,9 @@ import { DepthChart } from "@/components/depth-chart"
 import { GeoSelector } from "@/components/geo-selector"
 import { OnboardingModal } from "@/components/onboarding-modal"
 import { SiteFooter } from "@/components/site-footer"
+import { WhyWeSkip } from "@/components/why-we-skip"
+import { AgentSentryStatus } from "@/components/agent-sentry-status"
+import { InstitutionalMetrics } from "@/components/institutional-metrics"
 import Link from "next/link"
 
 // Mock data for demonstration
@@ -391,6 +394,12 @@ export default function Dashboard() {
 
           {/* Sidebar */}
           <div className="space-y-4">
+            {/* AgentSentry Status Widget */}
+            <AgentSentryStatus />
+            
+            {/* Institutional Performance Metrics */}
+            <InstitutionalMetrics />
+            
             <ApprovalQueue
               trades={pendingTrades}
               onApprove={handleApprove}
@@ -402,6 +411,9 @@ export default function Dashboard() {
           </div>
         </div>
       </main>
+
+      {/* Why We Skip - Proof of No-Trade Section */}
+      <WhyWeSkip />
 
       {/* Audit Trail Drawer */}
       <AuditTrailDrawer isOpen={isAuditDrawerOpen} onClose={() => setIsAuditDrawerOpen(false)} />
