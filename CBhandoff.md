@@ -362,6 +362,32 @@ Triple opportunity surface by adding BTC-PERP and ETH-PERP:
 
 ---
 
+## Hackathon Demo Assets
+
+### Chaos Demo (/chaos-demo)
+60-second dramatic simulation demonstrating GUARD circuit-breaker:
+- Phase 1 (0-10s): Normal monitoring
+- Phase 2 (10-20s): Anomaly detection - funding spikes from 0.031% to 0.201%
+- Phase 3 (20-35s): Sentry Brain deliberates with typing animation
+- Phase 4 (35-45s): AgentSentry BLOCK verdict
+- Phase 5 (45-55s): GUARD card with $41,200 protected
+- Phase 6 (55-60s): Aftermath comparison panel
+
+### Founders Vault (/founders-vault)
+TVL acquisition page - "The First 100 Vault":
+- 100 spots at $1,000-$5,000 each
+- Lifetime 0% performance fees for founders
+- Supabase waitlist table: `founders_waitlist`
+- API: `/api/founders-waitlist` (GET/POST)
+
+### llms.txt (/public/llms.txt)
+AI-readable documentation for search engines:
+- Product description and key metrics
+- Ecosystem context and parent org link
+- Key pages and contact info
+
+---
+
 ## Social Links
 
 - **X (Twitter):** https://x.com/bcblockhtx
