@@ -157,7 +157,7 @@ export function AgentSentryStatus({ onExecuteCheck }: AgentSentryStatusProps) {
       <div className="space-y-2 text-xs">
         <div className="flex items-center justify-between">
           <span className="text-muted-foreground">Last check-in:</span>
-          <span className="font-mono text-foreground">
+          <span className="font-mono text-foreground" suppressHydrationWarning>
             {mounted && lastCheckIn ? lastCheckIn.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit", second: "2-digit" }) : "--:--:--"}
           </span>
         </div>
