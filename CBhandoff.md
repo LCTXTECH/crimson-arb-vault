@@ -367,28 +367,35 @@ Triple opportunity surface by adding BTC-PERP and ETH-PERP:
 
 ---
 
-## Privy Authentication (Stub Mode)
+## Privy Authentication (ACTIVE)
 
-**Status:** Components created, awaiting Privy app configuration
+**Status:** FULLY ACTIVATED - All stubs replaced with real Privy SDK
 
-### Files Created:
-- `/components/providers/privy-provider.tsx` - Wrapper provider (stub)
-- `/contexts/auth-context.tsx` - Auth state management (stub)
+### Environment Variables (Configured):
+- `NEXT_PUBLIC_PRIVY_APP_ID` - Privy app identifier
+- `NEXT_PUBLIC_PRIVY_CLIENT_ID` - Cross-app provider client ID
+- `NEXT_PUBLIC_WALLET_DOMAIN` - Global wallet domain (crimsonarb.com)
+- `JWT_SECRET` - Token signing secret
+
+### Files (Activated):
+- `/components/providers/privy-provider.tsx` - Full Privy SDK with Solana wallets
+- `/contexts/auth-context.tsx` - Real usePrivy/useSolanaWallets hooks
 - `/components/auth/sign-in-button.tsx` - SignInButton, NavAuthButton
 - `/components/auth/auth-gate.tsx` - AuthGate wrapper
 - `/components/auth/onboarding-flow.tsx` - 3-step onboarding
 - `/app/api/auth/sync/route.ts` - Supabase user sync
+- `/app/api/vault/position/route.ts` - Vault position endpoint
+- `/lib/wallet-client.ts` - Cross-app provider clients (migration-ready)
 
-### Human Tasks Required:
-See **PRIVY_HUMAN_TASKS.md** for complete setup checklist:
-1. Create app at console.privy.io
-2. Configure login methods (Google, Email, Wallet)
-3. Enable embedded Solana wallets
-4. Set appearance (dark theme, #DC2626 accent)
-5. Add allowed origins
-6. Add NEXT_PUBLIC_PRIVY_APP_ID to Vercel
-7. Install @privy-io/react-auth package
-8. Replace stub implementations with full Privy hooks
+### Global Wallet Pages:
+- `/wallet/connect` - Wallet connection handler
+- `/wallet/auth` - OAuth2 auth handler
+
+### Privy Dashboard Tasks (Post-Deploy):
+1. Enable Global Wallet → Advanced → Custom URLs
+2. Set connect: https://crimsonarb.com/wallet/connect
+3. Set auth: https://crimsonarb.com/wallet/auth
+4. Add all BCBlock domains to Allowed Origins
 
 ### Database Columns Added to profiles:
 - `privy_id` (TEXT UNIQUE)
