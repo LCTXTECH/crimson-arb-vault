@@ -3,6 +3,81 @@
  * Transforms Drift protocol trading data into human-readable sentences for the dashboard
  */
 
+/**
+ * Multi-Market Configuration
+ * Phase 2 expansion: BTC + ETH alongside SOL
+ */
+export const MARKET_CONFIG = {
+  "SOL-PERP": {
+    weight: 0.40,
+    minFundingRate: 0.0002, // 0.02%/hr minimum
+    maxPositionSize: 50000, // $50K max per market
+    decayThreshold: 4, // Hours before predicted decay triggers exit
+    riskMultiplier: 1.0,
+    enabled: true,
+  },
+  "BTC-PERP": {
+    weight: 0.35,
+    minFundingRate: 0.00015, // 0.015%/hr - lower threshold due to higher liquidity
+    maxPositionSize: 75000, // $75K - deeper liquidity allows larger positions
+    decayThreshold: 6, // BTC funding more stable, can hold longer
+    riskMultiplier: 0.8, // Lower risk due to liquidity
+    enabled: true,
+  },
+  "ETH-PERP": {
+    weight: 0.25,
+    minFundingRate: 0.00018, // 0.018%/hr
+    maxPositionSize: 40000, // $40K
+    decayThreshold: 5,
+    riskMultiplier: 0.9,
+    enabled: true,
+  },
+  "JUP-PERP": {
+    weight: 0.0, // Not active yet - Phase 3
+    minFundingRate: 0.0003,
+    maxPositionSize: 20000,
+    decayThreshold: 3,
+    riskMultiplier: 1.5,
+    enabled: false,
+  },
+  "BONK-PERP": {
+    weight: 0.0, // Not active yet - Phase 3
+    minFundingRate: 0.0005,
+    maxPositionSize: 10000,
+    decayThreshold: 2,
+    riskMultiplier: 2.0,
+    enabled: false,
+  },
+} as const
+
+export type SupportedMarket = keyof typeof MARKET_CONFIG
+
+/**
+ * Get active markets sorted by weight
+ */
+export function getActiveMarkets(): SupportedMarket[] {
+  return (Object.entries(MARKET_CONFIG) as [SupportedMarket, typeof MARKET_CONFIG[SupportedMarket]][])
+    .filter(([, config]) => config.enabled && config.weight > 0)
+    .sort((a, b) => b[1].weight - a[1].weight)
+    .map(([market]) => market)
+}
+
+/**
+ * Calculate position size for a market based on total vault capital
+ */
+export function calculatePositionSize(market: SupportedMarket, totalCapital: number): number {
+  const config = MARKET_CONFIG[market]
+  const targetSize = totalCapital * config.weight
+  return Math.min(targetSize, config.maxPositionSize)
+}
+
+/**
+ * Check if funding rate meets minimum threshold for a market
+ */
+export function meetsMinFundingThreshold(market: SupportedMarket, fundingRate: number): boolean {
+  return fundingRate >= MARKET_CONFIG[market].minFundingRate
+}
+
 export interface DriftTradeData {
   type: "OPEN_BASIS" | "CLOSE_BASIS" | "REBALANCE" | "LIQUIDATION_GUARD" | "FUNDING_CAPTURE"
   symbol: string // e.g., "SOL-PERP", "BTC-PERP"

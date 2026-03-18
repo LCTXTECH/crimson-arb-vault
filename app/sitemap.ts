@@ -56,6 +56,10 @@ const CORE_PAGES = [
   { path: "/proof-of-no-trade", priority: 1.0, changeFrequency: "weekly" as const, images: [] },
   { path: "/mainnet-roadmap", priority: 0.9, changeFrequency: "weekly" as const, images: [] },
   { path: "/whitepaper", priority: 1.0, changeFrequency: "monthly" as const, images: [] },
+  { path: "/blog", priority: 0.85, changeFrequency: "weekly" as const, images: [] },
+  { path: "/blog/proof-of-no-trade", priority: 0.90, changeFrequency: "monthly" as const, images: [] },
+  { path: "/blog/drift-protocol-funding-rate-guide", priority: 0.85, changeFrequency: "monthly" as const, images: [] },
+  { path: "/blog/agentsentry-pre-finality-screening", priority: 0.80, changeFrequency: "monthly" as const, images: [] },
 ]
 
 // Market pages - maps to /app/markets/[symbol]/page.tsx with full SEO
