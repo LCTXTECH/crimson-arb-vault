@@ -1,10 +1,7 @@
 'use client'
 
-import { createContext, useContext, useState, useCallback, ReactNode } from 'react'
-
-// Stub auth context - works without Privy installed
-// When Privy is configured, replace with full implementation
-// See PRIVY_HUMAN_TASKS.md for complete setup instructions
+import { createContext, useContext, useState, useCallback, useEffect, ReactNode } from 'react'
+import { usePrivy, useSolanaWallets } from '@privy-io/react-auth'
 
 export interface VaultUser {
   privyId: string
@@ -40,44 +37,86 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | null>(null)
 
 export function AuthProvider({ children }: { children: ReactNode }) {
+  const { ready, authenticated, user: privyUser, login, logout: privyLogout } = usePrivy()
+  const { wallets } = useSolanaWallets()
+  
   const [user, setUser] = useState<VaultUser | null>(null)
-  const [isLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
   const [vaultPosition, setVaultPosition] = useState<VaultPosition | null>(null)
 
-  const refreshPosition = useCallback(async () => {
-    // Stub - will fetch from /api/vault/position when Privy is configured
-  }, [])
+  // Get primary wallet (prefer Privy embedded, fall back to first connected)
+  const primaryWallet = wallets.find(w => w.walletClientType === 'privy') || wallets[0] || null
+  const walletAddress = primaryWallet?.address || null
 
-  // Stub login - shows alert until Privy is configured
-  const login = useCallback(() => {
-    alert(
-      'Privy authentication not configured.\n\n' +
-        'To enable login:\n' +
-        '1. Create app at console.privy.io\n' +
-        '2. Add NEXT_PUBLIC_PRIVY_APP_ID to Vercel\n' +
-        '3. See PRIVY_HUMAN_TASKS.md for details'
-    )
-  }, [])
+  const refreshPosition = useCallback(async () => {
+    if (!walletAddress) return
+    try {
+      const res = await fetch(`/api/vault/position?wallet=${walletAddress}`)
+      if (res.ok) {
+        const data = await res.json()
+        setVaultPosition(data.position)
+      }
+    } catch (err) {
+      console.error('[v0] Failed to refresh position:', err)
+    }
+  }, [walletAddress])
+
+  const syncUserToSupabase = useCallback(async () => {
+    if (!privyUser) return
+    setIsLoading(true)
+    try {
+      const email = privyUser.google?.email || privyUser.email?.address || null
+      const res = await fetch('/api/auth/sync', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          privyId: privyUser.id,
+          email,
+          walletAddress,
+          googleId: privyUser.google?.subject || null,
+          displayName: privyUser.google?.name || email?.split('@')[0] || 'Vault User',
+        }),
+      })
+      if (res.ok) {
+        const data = await res.json()
+        setUser(data.user)
+        if (walletAddress) await refreshPosition()
+      }
+    } catch (err) {
+      console.error('[v0] Auth sync failed:', err)
+    } finally {
+      setIsLoading(false)
+    }
+  }, [privyUser, walletAddress, refreshPosition])
+
+  // Sync user when auth state changes
+  useEffect(() => {
+    if (!ready) return
+    if (authenticated && privyUser) {
+      syncUserToSupabase()
+    } else {
+      setUser(null)
+      setVaultPosition(null)
+      setIsLoading(false)
+    }
+  }, [ready, authenticated, privyUser?.id, walletAddress, syncUserToSupabase])
 
   const logout = useCallback(() => {
+    privyLogout()
     setUser(null)
     setVaultPosition(null)
-  }, [])
-
-  const connectWallet = useCallback(() => {
-    login()
-  }, [login])
+  }, [privyLogout])
 
   return (
     <AuthContext.Provider
       value={{
         user,
-        isAuthenticated: !!user,
-        isLoading,
-        walletAddress: user?.walletAddress || null,
+        isAuthenticated: authenticated && !!user,
+        isLoading: !ready || isLoading,
+        walletAddress,
         login,
         logout,
-        connectWallet,
+        connectWallet: login,
         vaultPosition,
         refreshPosition,
       }}
