@@ -2,6 +2,14 @@
 
 import { useState, useEffect } from "react"
 
+interface MarketAllocation {
+  symbol: string
+  ticker: string
+  color: string
+  allocation: number
+  maxAllocation: number
+}
+
 interface PerformanceMetrics {
   currentAPY: number
   sharpeRatio: number
@@ -11,7 +19,15 @@ interface PerformanceMetrics {
   opportunitiesExecuted: number
   skipRate: number
   avgHoldDuration: number
+  marketsMonitored: number
+  crossMarketSkips: number
 }
+
+const MARKET_ALLOCATIONS: MarketAllocation[] = [
+  { symbol: "SOL-PERP", ticker: "SOL", color: "#9945FF", allocation: 40, maxAllocation: 40 },
+  { symbol: "BTC-PERP", ticker: "BTC", color: "#F7931A", allocation: 28, maxAllocation: 35 },
+  { symbol: "ETH-PERP", ticker: "ETH", color: "#627EEA", allocation: 19, maxAllocation: 25 },
+]
 
 export function InstitutionalMetrics() {
   const [metrics, setMetrics] = useState<PerformanceMetrics>({
@@ -19,10 +35,12 @@ export function InstitutionalMetrics() {
     sharpeRatio: 2.4,
     maxDrawdown: 0.0,
     fundingCaptureRate: 73,
-    opportunitiesEvaluated: 847,
-    opportunitiesExecuted: 237,
-    skipRate: 72,
+    opportunitiesEvaluated: 1847,
+    opportunitiesExecuted: 387,
+    skipRate: 79,
     avgHoldDuration: 4.2,
+    marketsMonitored: 3,
+    crossMarketSkips: 412,
   })
 
   const [isLoading, setIsLoading] = useState(true)
@@ -129,8 +147,42 @@ export function InstitutionalMetrics() {
         </div>
       </div>
 
+      {/* Market Allocation */}
+      <div className="px-4 py-3 border-b border-border">
+        <div className="text-xs text-muted-foreground uppercase tracking-wider mb-2">Market Allocation</div>
+        <div className="space-y-2">
+          {MARKET_ALLOCATIONS.map((market) => (
+            <div key={market.symbol} className="flex items-center gap-2">
+              <span className="text-xs font-mono w-8" style={{ color: market.color }}>{market.ticker}</span>
+              <div className="flex-1 h-2 bg-muted rounded-full overflow-hidden">
+                <div 
+                  className="h-full rounded-full transition-all duration-500"
+                  style={{ 
+                    width: `${(market.allocation / market.maxAllocation) * 100}%`,
+                    backgroundColor: market.color,
+                  }}
+                />
+              </div>
+              <span className="text-xs font-mono text-muted-foreground w-10 text-right">{market.allocation}%</span>
+            </div>
+          ))}
+          <div className="flex items-center gap-2 pt-1 border-t border-border/50">
+            <span className="text-xs text-muted-foreground w-8">Free</span>
+            <div className="flex-1 h-2 bg-muted rounded-full overflow-hidden">
+              <div className="h-full bg-muted-foreground/30 rounded-full" style={{ width: "13%" }} />
+            </div>
+            <span className="text-xs font-mono text-muted-foreground w-10 text-right">13%</span>
+          </div>
+        </div>
+      </div>
+
       {/* Detailed Metrics */}
       <div className="px-4 py-2">
+        <MetricRow 
+          label="Markets Monitored" 
+          value={`${metrics.marketsMonitored} (SOL, BTC, ETH)`}
+          tooltip="Active markets evaluated each cycle"
+        />
         <MetricRow 
           label="Sharpe Ratio" 
           value={metrics.sharpeRatio.toFixed(1)} 
@@ -144,14 +196,19 @@ export function InstitutionalMetrics() {
           tooltip="Percentage of available funding captured vs theoretical max"
         />
         <MetricRow 
-          label="Opportunities Evaluated" 
-          value={metrics.opportunitiesEvaluated.toLocaleString()}
-          tooltip="Total trade opportunities analyzed by Sentry Brain"
+          label="Evaluations (cycles x 3)" 
+          value={(metrics.opportunitiesEvaluated * 3).toLocaleString()}
+          tooltip="Total opportunity assessments across all markets"
         />
         <MetricRow 
           label="Opportunities Executed" 
           value={metrics.opportunitiesExecuted.toLocaleString()}
           tooltip="Trades that passed all filters and were executed"
+        />
+        <MetricRow 
+          label="Cross-Market Skips" 
+          value={metrics.crossMarketSkips.toLocaleString()}
+          tooltip="Cycles where all 3 markets were skipped"
         />
         <MetricRow 
           label="Skip Rate" 
@@ -171,7 +228,7 @@ export function InstitutionalMetrics() {
       <div className="px-4 py-2 bg-muted/20 border-t border-border">
         <div className="flex items-center justify-between text-xs text-muted-foreground">
           <span>Delta-Neutral Strategy</span>
-          <span className="font-mono">Updated: {new Date().toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" })}</span>
+          <span className="font-mono" suppressHydrationWarning>Updated: {!isLoading ? new Date().toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit", hour12: false }) : "--:--"}</span>
         </div>
       </div>
     </div>
