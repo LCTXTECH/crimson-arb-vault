@@ -1,20 +1,53 @@
 'use client'
 
+import { PrivyProvider as BasePrivyProvider } from '@privy-io/react-auth'
+import { toSolanaWalletConnectors } from '@privy-io/react-auth/solana'
 import { ReactNode } from 'react'
 
-// Stub provider that passes through children
-// The real Privy integration requires:
-// 1. npm install @privy-io/react-auth
-// 2. NEXT_PUBLIC_PRIVY_APP_ID environment variable
-//
-// See PRIVY_HUMAN_TASKS.md for complete setup instructions
+const solanaConnectors = toSolanaWalletConnectors({
+  shouldAutoConnect: true,
+})
 
-interface PrivyProviderProps {
-  children: ReactNode
-}
+export function PrivyProvider({ children }: { children: ReactNode }) {
+  const appId = process.env.NEXT_PUBLIC_PRIVY_APP_ID
 
-export function PrivyProvider({ children }: PrivyProviderProps) {
-  // When Privy is configured, this will be replaced with the real provider
-  // For now, just pass through children to allow the app to build
-  return <>{children}</>
+  if (!appId) {
+    console.warn('[v0] NEXT_PUBLIC_PRIVY_APP_ID not set - auth disabled')
+    return <>{children}</>
+  }
+
+  return (
+    <BasePrivyProvider
+      appId={appId}
+      config={{
+        appearance: {
+          theme: 'dark',
+          accentColor: '#DC2626',
+          logo: 'https://crimsonarb.com/logo.png',
+          landingHeader: 'Access Your Yield Vault',
+          loginMessage: 'Sign in to start earning with the Sentry Brain',
+          showWalletLoginFirst: false,
+        },
+        loginMethods: ['google', 'email', 'wallet'],
+        embeddedWallets: {
+          createOnLogin: 'all-users',
+          noPromptOnSignature: false,
+          requireUserPasswordOnCreate: false,
+        },
+        externalWallets: {
+          solana: {
+            connectors: solanaConnectors,
+          },
+        },
+        solanaClusters: [
+          {
+            name: process.env.NEXT_PUBLIC_SOLANA_NETWORK === 'mainnet-beta' ? 'mainnet-beta' : 'devnet',
+            rpcUrl: process.env.NEXT_PUBLIC_SOLANA_RPC_URL || 'https://api.devnet.solana.com',
+          },
+        ],
+      }}
+    >
+      {children}
+    </BasePrivyProvider>
+  )
 }
