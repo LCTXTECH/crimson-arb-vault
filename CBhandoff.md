@@ -11,6 +11,16 @@
 
 CrimsonArb is an institutional-grade delta-neutral yield vault that uses AI ("Sentry Brain") to intelligently capture funding rate arbitrage on Drift Protocol while avoiding alpha decay. The system is built on the Ranger Finance architecture (Voltr SDK) and is currently deployed on Solana Devnet for testing and judge evaluation.
 
+**Multi-Market Configuration (Live):**
+- SOL-PERP (40% max allocation) - Primary market
+- BTC-PERP (35% max allocation) - Deepest liquidity
+- ETH-PERP (25% max allocation) - Correlation hedge
+
+**Key Metrics:**
+- 5,541 total evaluations (1,847 cycles x 3 markets)
+- 387 executed, 1,460 skipped, 79% skip rate
+- 412 cross-market skips (all 3 markets below threshold)
+
 **Live URLs:**
 - Dashboard: `https://crimsonarb.com`
 - Devnet Sandbox: `https://crimsonarb.com/sandbox`
@@ -110,31 +120,34 @@ CrimsonArb is an institutional-grade delta-neutral yield vault that uses AI ("Se
 
 ## File Structure
 
-### Frontend Pages (19 pages)
+### Frontend Pages (22 pages)
 | Route | File | Description |
 |-------|------|-------------|
 | `/` | `app/page.tsx` | Main dashboard with Sentry Brain, AgentSentry widget, metrics |
 | `/sandbox` | `app/sandbox/page.tsx` | Devnet testing with auto-running LiveSimulationV2 |
 | `/transparency` | `app/transparency/page.tsx` | Investor report with charts + lead gen form |
-| `/proof-of-no-trade` | `app/proof-of-no-trade/page.tsx` | Manifesto page - our key differentiator |
+| `/proof-of-no-trade` | `app/proof-of-no-trade/page.tsx` | Manifesto page with market-level skip breakdown |
 | `/whitepaper` | `app/whitepaper/page.tsx` | Full technical whitepaper with sticky TOC |
 | `/judges` | `app/judges/page.tsx` | Hackathon submission page (noindex) |
 | `/admin/submission` | `app/admin/submission/page.tsx` | War room: scripts, copy, checklist (noindex) |
 | `/mainnet-roadmap` | `app/mainnet-roadmap/page.tsx` | Deployment timeline + conservative launch params |
+| `/blog` | `app/blog/page.tsx` | Blog index with featured articles |
+| `/blog/[slug]` | `app/blog/[slug]/page.tsx` | Dynamic blog articles with JSON-LD |
 | `/analytics` | `app/analytics/page.tsx` | Performance analytics |
 | `/vault` | `app/vault/page.tsx` | Vault details and deposit/withdraw |
 | `/markets/[symbol]` | `app/markets/[symbol]/page.tsx` | Individual market pages |
 | `/docs/*` | `app/docs/*/page.tsx` | API docs, getting started, Sentry AI docs |
 
-### Components (25 components)
+### Components (27 components)
 | Component | Purpose |
 |-----------|---------|
 | `sentry-brain.tsx` | AI visualization with neural network animation |
-| `sentry-decision-matrix.tsx` | Hex grid showing AI EXECUTE/SKIP/GUARD decisions |
-| `live-simulation-v2.tsx` | Auto-running 45s simulation for judges (5 decisions) |
+| `sentry-decision-matrix.tsx` | Hex grid with market zones (SOL/BTC/ETH/SYS) |
+| `live-simulation-v2.tsx` | Auto-running 45s multi-market simulation (5 decisions) |
 | `why-we-skip.tsx` | "Proof of No-Trade" section with last 10 skips |
 | `agent-sentry-status.tsx` | Live AgentSentry status widget (30s polling) |
-| `institutional-metrics.tsx` | Performance metrics card (APY, Sharpe, Drawdown) |
+| `institutional-metrics.tsx` | Performance metrics + market allocation bars |
+| `sentry-brain-report.tsx` | Newsletter signup component (3 variants) |
 | `approval-queue.tsx` | Trade approval interface with countdown timers |
 | `audit-trail-drawer.tsx` | Expandable execution log |
 | `depth-chart.tsx` | Order book depth visualization |
@@ -148,8 +161,8 @@ CrimsonArb is an institutional-grade delta-neutral yield vault that uses AI ("Se
 ### API Routes (11 endpoints)
 | Endpoint | Method | Description |
 |----------|--------|-------------|
-| `/api/decisions` | GET/POST | AI decision logging and retrieval |
-| `/api/decisions/seed` | POST | Populate demo data (13 AI decisions) |
+| `/api/decisions` | GET/POST | AI decision logging with multi-market data |
+| `/api/decisions/seed` | POST | Populate demo data (15 multi-market decisions) |
 | `/api/sentry/status` | GET | AgentSentry status check (polls every 30s) |
 | `/api/feedback` | GET/POST | Developer feedback for sandbox |
 | `/api/contact` | POST | Lead gen form → info@bcblock.net |

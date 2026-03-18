@@ -6,13 +6,20 @@ import Link from "next/link"
 import { SiteHeader } from "@/components/site-header"
 import { SiteFooter } from "@/components/site-footer"
 
-// Skip reason breakdown data
+// Skip reason breakdown data with market distribution
 const SKIP_REASONS = [
-  { reason: "Alpha below threshold", percentage: 47, example: "Funding rate was +0.0089%/hr. After fees (0.003%), expected alpha was +0.006%. Minimum threshold: +0.020%. Not traded." },
-  { reason: "Funding rate decay", percentage: 31, example: "Rate was +0.0341%/hr but trending -0.002%/hr. Decay model predicted crossover in 1.4 hours. Position would have been unprofitable." },
-  { reason: "Counterparty anomaly", percentage: 14, example: "Single wallet accumulated 28% of short OI in 45 minutes. Potential manipulation detected. Circuit breaker activated." },
-  { reason: "AgentSentry BLOCK", percentage: 5, example: "External security layer detected elevated systemic risk across Drift markets. All execution paused for 15 minutes." },
-  { reason: "Position size too small", percentage: 3, example: "Available capital $847 USDC. Minimum position size $1,000. Waiting for deposits or position closure." },
+  { reason: "Alpha below threshold", percentage: 47, example: "Funding rate was +0.0089%/hr. After fees (0.003%), expected alpha was +0.006%. Minimum threshold: +0.020%. Not traded.", markets: { SOL: 52, BTC: 31, ETH: 17 } },
+  { reason: "Funding rate decay", percentage: 31, example: "Rate was +0.0341%/hr but trending -0.002%/hr. Decay model predicted crossover in 1.4 hours. Position would have been unprofitable.", markets: { SOL: 38, BTC: 35, ETH: 27 } },
+  { reason: "Counterparty anomaly", percentage: 14, example: "Single wallet accumulated 28% of short OI in 45 minutes. Potential manipulation detected. Circuit breaker activated.", markets: { SOL: 45, BTC: 28, ETH: 27 } },
+  { reason: "AgentSentry BLOCK", percentage: 5, example: "External security layer detected elevated systemic risk across Drift markets. All execution paused for 15 minutes.", markets: { SOL: 40, BTC: 35, ETH: 25 } },
+  { reason: "Position size too small", percentage: 3, example: "Available capital $847 USDC. Minimum position size $1,000. Waiting for deposits or position closure.", markets: { SOL: 50, BTC: 30, ETH: 20 } },
+]
+
+// Skip rate by market
+const MARKET_SKIP_RATES = [
+  { market: "SOL-PERP", ticker: "SOL", color: "#9945FF", skipRate: 76 },
+  { market: "BTC-PERP", ticker: "BTC", color: "#F7931A", skipRate: 83 },
+  { market: "ETH-PERP", ticker: "ETH", color: "#627EEA", skipRate: 89 },
 ]
 
 // Last 24 hours decisions (mock data)

@@ -4,6 +4,48 @@
  */
 
 /**
+ * CRIMSON_MARKETS - Display configuration for multi-market UI
+ */
+export const CRIMSON_MARKETS = [
+  {
+    symbol: 'SOL-PERP',
+    displayName: 'Solana',
+    ticker: 'SOL',
+    driftMarketIndex: 0,
+    maxAllocation: 0.40,
+    color: '#9945FF',
+    icon: '◎',
+  },
+  {
+    symbol: 'BTC-PERP',
+    displayName: 'Bitcoin',
+    ticker: 'BTC',
+    driftMarketIndex: 1,
+    maxAllocation: 0.35,
+    color: '#F7931A',
+    icon: '₿',
+  },
+  {
+    symbol: 'ETH-PERP',
+    displayName: 'Ethereum',
+    ticker: 'ETH',
+    driftMarketIndex: 2,
+    maxAllocation: 0.25,
+    color: '#627EEA',
+    icon: 'Ξ',
+  },
+] as const
+
+export const VAULT_CONSTRAINTS = {
+  maxTotalDeployment: 0.80,
+  minFundingThreshold: 0.020,
+  minConfidence: 0.75,
+  maxOIConcentration: 0.25,
+} as const
+
+export type CrimsonMarket = typeof CRIMSON_MARKETS[number]
+
+/**
  * Multi-Market Configuration
  * Phase 2 expansion: BTC + ETH alongside SOL
  */

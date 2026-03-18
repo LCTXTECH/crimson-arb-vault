@@ -4,58 +4,99 @@ import { useState, useEffect, useCallback } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import Link from "next/link"
 
-// Decision script - matches the battle plan exactly
+// Multi-market evaluation script - shows cross-market decision making
 const SIMULATION_SCRIPT = [
   {
     delay: 5000,
-    type: "SKIP" as const,
-    market: "BTC-PERP/USDC",
-    fundingRate: 0.0089,
-    confidence: 91,
-    reasoning: "Rate below minimum threshold (0.02%). Alpha insufficient after fee load. Opportunity logged. Not traded.",
-    hexIndex: 7,
+    type: "EXECUTE" as const,
+    market: "SOL-PERP",
+    fundingRate: 0.0312,
+    confidence: 87,
+    reasoning: "SOL funding 0.0312%/hr exceeds threshold. BTC 0.0189%/hr (skip). ETH 0.0144%/hr (skip). SOL selected as highest confidence opportunity.",
+    hexIndex: 0,
+    positionSize: 12400,
+    allMarkets: [
+      { symbol: "SOL-PERP", rate: 0.0312, decision: "EXECUTE", confidence: 87 },
+      { symbol: "BTC-PERP", rate: 0.0189, decision: "SKIP", confidence: 91 },
+      { symbol: "ETH-PERP", rate: 0.0144, decision: "SKIP", confidence: 88 },
+    ],
   },
   {
     delay: 12000,
-    type: "EXECUTE" as const,
-    market: "SOL-PERP/USDC",
-    fundingRate: 0.0312,
-    confidence: 87,
-    reasoning: "Funding rate exceeds 3σ threshold. Decay model projects 4.2hr runway. Position size: $12,400 USDC.",
-    hexIndex: 0,
-    positionSize: 12400,
+    type: "SKIP" as const,
+    market: "ALL MARKETS",
+    fundingRate: 0.011,
+    confidence: 92,
+    reasoning: "SOL declined to 0.009%/hr. BTC 0.011%/hr. ETH 0.007%/hr. No market above 0.020% threshold. 3 opportunities evaluated, 0 executed this cycle.",
+    hexIndex: 7,
+    allMarkets: [
+      { symbol: "SOL-PERP", rate: 0.009, decision: "SKIP", confidence: 94 },
+      { symbol: "BTC-PERP", rate: 0.011, decision: "SKIP", confidence: 92 },
+      { symbol: "ETH-PERP", rate: 0.007, decision: "SKIP", confidence: 96 },
+    ],
   },
   {
     delay: 20000,
-    type: "SKIP" as const,
-    market: "JUP-PERP/USDC",
-    fundingRate: 0.0156,
-    confidence: 84,
-    reasoning: "Funding rate trending downward. Decay predicted within 1.8 hours. Risk-adjusted return negative.",
-    hexIndex: 21,
+    type: "EXECUTE" as const,
+    market: "BTC-PERP",
+    fundingRate: 0.0410,
+    confidence: 89,
+    reasoning: "BTC funding spiked to 0.041%/hr following large long OI increase. SOL 0.012%/hr (skip). ETH 0.015%/hr (skip). BTC selected as highest confidence.",
+    hexIndex: 8,
+    positionSize: 18600,
+    allMarkets: [
+      { symbol: "SOL-PERP", rate: 0.012, decision: "SKIP", confidence: 85 },
+      { symbol: "BTC-PERP", rate: 0.041, decision: "EXECUTE", confidence: 89 },
+      { symbol: "ETH-PERP", rate: 0.015, decision: "SKIP", confidence: 82 },
+    ],
   },
   {
     delay: 31000,
     type: "GUARD" as const,
-    market: "ETH-PERP/USDC",
-    fundingRate: 0.0445,
+    market: "ETH-PERP",
+    fundingRate: 0.0380,
     confidence: 94,
-    reasoning: "Counterparty concentration anomaly detected. Single wallet holds 31% of short OI. Circuit breaker active.",
+    reasoning: "ETH funding elevated at 0.038%/hr but single wallet holds 34% of short OI. Counterparty concentration exceeds 25% threshold. AgentSentry: BLOCK.",
     hexIndex: 14,
+    allMarkets: [
+      { symbol: "SOL-PERP", rate: 0.018, decision: "SKIP", confidence: 78 },
+      { symbol: "BTC-PERP", rate: 0.022, decision: "SKIP", confidence: 81 },
+      { symbol: "ETH-PERP", rate: 0.038, decision: "GUARD", confidence: 94 },
+    ],
   },
   {
     delay: 45000,
-    type: "SKIP" as const,
-    market: "BONK-PERP/USDC",
-    fundingRate: 0.0198,
-    confidence: 78,
-    reasoning: "Rate approaching threshold but liquidity depth insufficient. Slippage would exceed 0.5% on entry.",
-    hexIndex: 28,
+    type: "EXECUTE" as const,
+    market: "SOL-PERP",
+    fundingRate: 0.0290,
+    confidence: 86,
+    reasoning: "SOL funding recovered to 0.029%/hr with balanced OI distribution. BTC position still open. ETH 0.016%/hr (skip). SOL selected for diversification.",
+    hexIndex: 1,
+    positionSize: 14200,
+    allMarkets: [
+      { symbol: "SOL-PERP", rate: 0.029, decision: "EXECUTE", confidence: 86 },
+      { symbol: "BTC-PERP", rate: 0.019, decision: "SKIP", confidence: 84 },
+      { symbol: "ETH-PERP", rate: 0.016, decision: "SKIP", confidence: 79 },
+    ],
   },
 ]
 
-// Market labels for hex grid (7 columns x 5 rows = 35 hexes)
-const MARKET_LABELS = ["SOL", "BTC", "ETH", "JUP", "BONK"]
+// Market zone configuration for hex grid (7 columns x 5 rows = 35 hexes)
+// Zones: SOL (cols 0-1), BTC (cols 2-3), ETH (cols 4-5), SYS (col 6)
+const MARKET_ZONES = {
+  SOL: { cols: [0, 1], color: "#9945FF", icon: "◎" },
+  BTC: { cols: [2, 3], color: "#F7931A", icon: "₿" },
+  ETH: { cols: [4, 5], color: "#627EEA", icon: "Ξ" },
+  SYS: { cols: [6], color: "#DC2626", icon: "🛡" },
+}
+const MARKET_LABELS = ["◎ SOL", "₿ BTC", "Ξ ETH", "🛡 SYS", ""]
+
+interface MarketEvaluation {
+  symbol: string
+  rate: number
+  decision: "EXECUTE" | "SKIP" | "GUARD"
+  confidence: number
+}
 
 interface Decision {
   type: "EXECUTE" | "SKIP" | "GUARD"
@@ -67,6 +108,7 @@ interface Decision {
   hexIndex: number
   positionSize?: number
   agentSentryStatus?: "APPROVED" | "BLOCK"
+  allMarkets?: MarketEvaluation[]
 }
 
 export function LiveSimulationV2() {
