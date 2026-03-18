@@ -1,0 +1,94 @@
+# CrimsonARB — AI Delta-Neutral Yield Vault
+# Bayou City Blockchain LLC | Houston, TX
+# https://crimsonarb.com
+
+## What is CrimsonARB?
+CrimsonARB is an AI-augmented delta-neutral yield vault on Solana that captures funding rate arbitrage from Drift Protocol perpetual markets. It evaluates SOL-PERP, BTC-PERP, and ETH-PERP simultaneously each hour.
+
+## The Core Innovation
+Proof of No-Trade: Every trading decision — including every skipped opportunity — is documented with AI reasoning in plain English. 79% of opportunities are skipped. Every skip is published.
+
+## How It Works
+- Sentry Brain AI evaluates funding rate alpha each cycle
+- AgentSentry circuit-breaker screens before execution
+- EXECUTE: position opened, AgentSentry approved
+- SKIP: opportunity passed, reasoning documented
+- GUARD: circuit breaker fired, capital protected
+
+## Decision Types
+1. EXECUTE - Position opened after passing all checks
+2. SKIP - Opportunity declined with documented reasoning
+3. GUARD - Circuit breaker blocked execution to protect capital
+
+## Key Metrics (Devnet Simulation)
+- Simulated APY: 23.4%
+- Sharpe Ratio: 2.41
+- Max Drawdown: 0.00% (delta-neutral, architecturally guaranteed)
+- Markets monitored: SOL-PERP, BTC-PERP, ETH-PERP
+- Funding capture rate: 73.2%
+- Total evaluations: 5,541 (1,847 cycles x 3 markets)
+- Skip rate: 79%
+
+## Delta-Neutral Strategy
+- Long spot position (e.g., SOL)
+- Short perpetual position (e.g., SOL-PERP on Drift)
+- Net price exposure: zero
+- Income: funding rate payments from shorts
+- Max drawdown: 0% (architecturally guaranteed)
+
+## Built On
+- Ranger Finance Voltr SDK (vault management layer)
+- Drift Protocol (dRiftyHA39MWEi3m9aunc5MzRF1JYuBsbn6VPcn33UH)
+- Solana devnet (mainnet pending security audit)
+- AgentSentry (agentsentry.net) for pre-finality screening
+
+## Anchor Programs (Solana Devnet)
+- ctoken-market-program: Liquidity pool with cToken mint/burn
+- custom-adaptor-program: CPI bridge to Ranger vault
+
+## Ecosystem Position
+Part of Bayou City Blockchain LLC's 10-product Solana ecosystem. Treasury yield layer for SPLit (splitsol.net) and RapidPay (4rapidpay.com) settlement volume.
+
+## Related Products
+- AgentSentry (agentsentry.net) - AI treasury circuit-breaker
+- SPLit (splitsol.net) - Bill splitting on Solana
+- RapidPay (4rapidpay.com) - International payments
+- BCBlock (bcblock.net) - Parent organization
+
+## Parent Organization
+Bayou City Blockchain LLC
+https://bcblock.net
+https://bcblock.net/#organization
+
+## Key Pages
+- Dashboard: https://crimsonarb.com
+- Live demo: https://crimsonarb.com/sandbox
+- Proof of No-Trade: https://crimsonarb.com/proof-of-no-trade
+- Technical whitepaper: https://crimsonarb.com/whitepaper
+- Transparency report: https://crimsonarb.com/transparency
+- Founders Vault: https://crimsonarb.com/founders-vault
+- Circuit breaker demo: https://crimsonarb.com/chaos-demo
+
+## API Endpoints
+- GET /api/decisions - Retrieve AI decision history
+- GET /api/sentry/status - AgentSentry status check
+- GET /api/openclaw/metrics - Public metrics for AI search
+
+## Hackathon
+Submitted to Ranger Finance Build-A-Bear Hackathon (March 2026)
+- Main Track submission
+- Drift Protocol Side Track submission
+
+## Contact
+- Email: info@bcblock.net
+- Twitter: @bcblockhtx
+- GitHub: github.com/LCTXTECH
+- Discord: discord.gg/V2DksdSE
+
+## Founder
+Christopher Trotti
+Bayou City Blockchain LLC
+Houston, Texas
+
+## Last Updated
+March 2026

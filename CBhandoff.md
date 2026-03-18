@@ -120,7 +120,7 @@ CrimsonArb is an institutional-grade delta-neutral yield vault that uses AI ("Se
 
 ## File Structure
 
-### Frontend Pages (22 pages)
+### Frontend Pages (24 pages)
 | Route | File | Description |
 |-------|------|-------------|
 | `/` | `app/page.tsx` | Main dashboard with Sentry Brain, AgentSentry widget, metrics |
@@ -131,6 +131,8 @@ CrimsonArb is an institutional-grade delta-neutral yield vault that uses AI ("Se
 | `/judges` | `app/judges/page.tsx` | Hackathon submission page (noindex) |
 | `/admin/submission` | `app/admin/submission/page.tsx` | War room: scripts, copy, checklist (noindex) |
 | `/mainnet-roadmap` | `app/mainnet-roadmap/page.tsx` | Deployment timeline + conservative launch params |
+| `/chaos-demo` | `app/chaos-demo/page.tsx` | 60s GUARD circuit-breaker demo for video |
+| `/founders-vault` | `app/founders-vault/page.tsx` | TVL acquisition - First 100 waitlist |
 | `/blog` | `app/blog/page.tsx` | Blog index with featured articles |
 | `/blog/[slug]` | `app/blog/[slug]/page.tsx` | Dynamic blog articles with JSON-LD |
 | `/analytics` | `app/analytics/page.tsx` | Performance analytics |
@@ -138,12 +140,13 @@ CrimsonArb is an institutional-grade delta-neutral yield vault that uses AI ("Se
 | `/markets/[symbol]` | `app/markets/[symbol]/page.tsx` | Individual market pages |
 | `/docs/*` | `app/docs/*/page.tsx` | API docs, getting started, Sentry AI docs |
 
-### Components (27 components)
+### Components (28 components)
 | Component | Purpose |
 |-----------|---------|
 | `sentry-brain.tsx` | AI visualization with neural network animation |
 | `sentry-decision-matrix.tsx` | Hex grid with market zones (SOL/BTC/ETH/SYS) |
 | `live-simulation-v2.tsx` | Auto-running 45s multi-market simulation (5 decisions) |
+| `chaos-demo.tsx` | 60s dramatic GUARD simulation with comparison panel |
 | `why-we-skip.tsx` | "Proof of No-Trade" section with last 10 skips |
 | `agent-sentry-status.tsx` | Live AgentSentry status widget (30s polling) |
 | `institutional-metrics.tsx` | Performance metrics + market allocation bars |
@@ -170,6 +173,8 @@ CrimsonArb is an institutional-grade delta-neutral yield vault that uses AI ("Se
 | `/api/geo` | GET | Geolocation detection |
 | `/api/claw/execute` | POST | AgentSentry trade execution |
 | `/api/auth/*` | Various | OAuth authentication (Google, X) |
+| `/api/founders-waitlist` | GET/POST | Founders Vault waitlist management |
+| `/api/founders-waitlist/stats` | GET | Waitlist count and intended amounts |
 
 ### Libraries (9 libs)
 | Library | Purpose |
@@ -354,6 +359,32 @@ Triple opportunity surface by adding BTC-PERP and ETH-PERP:
 | P2 | Safest DeFi Yield | safe defi yield | 1,200w |
 | P2 | DeFi Audit Trails | defi transparency | 1,500w |
 - [ ] Launch Phase 2 trigger monitoring
+
+---
+
+## Hackathon Demo Assets
+
+### Chaos Demo (/chaos-demo)
+60-second dramatic simulation demonstrating GUARD circuit-breaker:
+- Phase 1 (0-10s): Normal monitoring
+- Phase 2 (10-20s): Anomaly detection - funding spikes from 0.031% to 0.201%
+- Phase 3 (20-35s): Sentry Brain deliberates with typing animation
+- Phase 4 (35-45s): AgentSentry BLOCK verdict
+- Phase 5 (45-55s): GUARD card with $41,200 protected
+- Phase 6 (55-60s): Aftermath comparison panel
+
+### Founders Vault (/founders-vault)
+TVL acquisition page - "The First 100 Vault":
+- 100 spots at $1,000-$5,000 each
+- Lifetime 0% performance fees for founders
+- Supabase waitlist table: `founders_waitlist`
+- API: `/api/founders-waitlist` (GET/POST)
+
+### llms.txt (/public/llms.txt)
+AI-readable documentation for search engines:
+- Product description and key metrics
+- Ecosystem context and parent org link
+- Key pages and contact info
 
 ---
 
