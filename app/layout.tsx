@@ -3,6 +3,9 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { baseMetadata, viewport as viewportConfig } from "@/lib/seo-config";
 import { LandingPageSchemas } from "@/components/structured-data";
+import { PrivyProvider } from "@/components/providers/privy-provider";
+import { AuthProvider } from "@/contexts/auth-context";
+import { OnboardingFlow } from "@/components/auth/onboarding-flow";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -45,7 +48,12 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {children}
+        <PrivyProvider>
+          <AuthProvider>
+            {children}
+            <OnboardingFlow />
+          </AuthProvider>
+        </PrivyProvider>
       </body>
     </html>
   );
