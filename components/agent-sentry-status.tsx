@@ -17,10 +17,17 @@ interface AgentSentryStatusProps {
 
 export function AgentSentryStatus({ onExecuteCheck }: AgentSentryStatusProps) {
   const [status, setStatus] = useState<SentryStatus>("APPROVE")
-  const [lastCheckIn, setLastCheckIn] = useState<Date>(new Date())
+  const [lastCheckIn, setLastCheckIn] = useState<Date | null>(null)
   const [blockedToday, setBlockedToday] = useState(0)
   const [isChecking, setIsChecking] = useState(false)
   const [checkResult, setCheckResult] = useState<{ approved: boolean; message: string } | null>(null)
+  const [mounted, setMounted] = useState(false)
+
+  // Set mounted state to avoid hydration mismatch
+  useEffect(() => {
+    setMounted(true)
+    setLastCheckIn(new Date())
+  }, [])
 
   const fetchStatus = useCallback(async () => {
     try {
@@ -151,7 +158,7 @@ export function AgentSentryStatus({ onExecuteCheck }: AgentSentryStatusProps) {
         <div className="flex items-center justify-between">
           <span className="text-muted-foreground">Last check-in:</span>
           <span className="font-mono text-foreground">
-            {lastCheckIn.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit", second: "2-digit" })}
+            {mounted && lastCheckIn ? lastCheckIn.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit", second: "2-digit" }) : "--:--:--"}
           </span>
         </div>
         <div className="flex items-center justify-between">
