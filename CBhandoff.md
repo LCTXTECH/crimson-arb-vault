@@ -151,6 +151,10 @@ CrimsonArb is an institutional-grade delta-neutral yield vault that uses AI ("Se
 | `agent-sentry-status.tsx` | Live AgentSentry status widget (30s polling) |
 | `institutional-metrics.tsx` | Performance metrics + market allocation bars |
 | `sentry-brain-report.tsx` | Newsletter signup component (3 variants) |
+| `providers/privy-provider.tsx` | Privy auth provider (stub until configured) |
+| `auth/sign-in-button.tsx` | Reusable sign-in button with variants |
+| `auth/auth-gate.tsx` | Auth-required wrapper component |
+| `auth/onboarding-flow.tsx` | 3-step new user onboarding modal |
 | `approval-queue.tsx` | Trade approval interface with countdown timers |
 | `audit-trail-drawer.tsx` | Expandable execution log |
 | `depth-chart.tsx` | Order book depth visualization |
@@ -173,6 +177,7 @@ CrimsonArb is an institutional-grade delta-neutral yield vault that uses AI ("Se
 | `/api/geo` | GET | Geolocation detection |
 | `/api/claw/execute` | POST | AgentSentry trade execution |
 | `/api/auth/*` | Various | OAuth authentication (Google, X) |
+| `/api/auth/sync` | POST | Privy user sync to Supabase profiles |
 | `/api/founders-waitlist` | GET/POST | Founders Vault waitlist management |
 | `/api/founders-waitlist/stats` | GET | Waitlist count and intended amounts |
 
@@ -359,6 +364,42 @@ Triple opportunity surface by adding BTC-PERP and ETH-PERP:
 | P2 | Safest DeFi Yield | safe defi yield | 1,200w |
 | P2 | DeFi Audit Trails | defi transparency | 1,500w |
 - [ ] Launch Phase 2 trigger monitoring
+
+---
+
+## Privy Authentication (Stub Mode)
+
+**Status:** Components created, awaiting Privy app configuration
+
+### Files Created:
+- `/components/providers/privy-provider.tsx` - Wrapper provider (stub)
+- `/contexts/auth-context.tsx` - Auth state management (stub)
+- `/components/auth/sign-in-button.tsx` - SignInButton, NavAuthButton
+- `/components/auth/auth-gate.tsx` - AuthGate wrapper
+- `/components/auth/onboarding-flow.tsx` - 3-step onboarding
+- `/app/api/auth/sync/route.ts` - Supabase user sync
+
+### Human Tasks Required:
+See **PRIVY_HUMAN_TASKS.md** for complete setup checklist:
+1. Create app at console.privy.io
+2. Configure login methods (Google, Email, Wallet)
+3. Enable embedded Solana wallets
+4. Set appearance (dark theme, #DC2626 accent)
+5. Add allowed origins
+6. Add NEXT_PUBLIC_PRIVY_APP_ID to Vercel
+7. Install @privy-io/react-auth package
+8. Replace stub implementations with full Privy hooks
+
+### Database Columns Added to profiles:
+- `privy_id` (TEXT UNIQUE)
+- `google_id` (TEXT)
+- `display_name` (TEXT)
+- `email` (TEXT)
+- `is_founder` (BOOLEAN)
+- `performance_fee_rate` (NUMERIC)
+- `sentry_points` (INTEGER)
+- `deposited_usdc` (NUMERIC)
+- `last_login_at` (TIMESTAMPTZ)
 
 ---
 
