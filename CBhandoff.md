@@ -120,7 +120,7 @@ CrimsonArb is an institutional-grade delta-neutral yield vault that uses AI ("Se
 
 ## File Structure
 
-### Frontend Pages (22 pages)
+### Frontend Pages (24 pages)
 | Route | File | Description |
 |-------|------|-------------|
 | `/` | `app/page.tsx` | Main dashboard with Sentry Brain, AgentSentry widget, metrics |
@@ -131,6 +131,8 @@ CrimsonArb is an institutional-grade delta-neutral yield vault that uses AI ("Se
 | `/judges` | `app/judges/page.tsx` | Hackathon submission page (noindex) |
 | `/admin/submission` | `app/admin/submission/page.tsx` | War room: scripts, copy, checklist (noindex) |
 | `/mainnet-roadmap` | `app/mainnet-roadmap/page.tsx` | Deployment timeline + conservative launch params |
+| `/chaos-demo` | `app/chaos-demo/page.tsx` | 60s GUARD circuit-breaker demo for video |
+| `/founders-vault` | `app/founders-vault/page.tsx` | TVL acquisition - First 100 waitlist |
 | `/blog` | `app/blog/page.tsx` | Blog index with featured articles |
 | `/blog/[slug]` | `app/blog/[slug]/page.tsx` | Dynamic blog articles with JSON-LD |
 | `/analytics` | `app/analytics/page.tsx` | Performance analytics |
@@ -138,12 +140,13 @@ CrimsonArb is an institutional-grade delta-neutral yield vault that uses AI ("Se
 | `/markets/[symbol]` | `app/markets/[symbol]/page.tsx` | Individual market pages |
 | `/docs/*` | `app/docs/*/page.tsx` | API docs, getting started, Sentry AI docs |
 
-### Components (27 components)
+### Components (28 components)
 | Component | Purpose |
 |-----------|---------|
 | `sentry-brain.tsx` | AI visualization with neural network animation |
 | `sentry-decision-matrix.tsx` | Hex grid with market zones (SOL/BTC/ETH/SYS) |
 | `live-simulation-v2.tsx` | Auto-running 45s multi-market simulation (5 decisions) |
+| `chaos-demo.tsx` | 60s dramatic GUARD simulation with comparison panel |
 | `why-we-skip.tsx` | "Proof of No-Trade" section with last 10 skips |
 | `agent-sentry-status.tsx` | Live AgentSentry status widget (30s polling) |
 | `institutional-metrics.tsx` | Performance metrics + market allocation bars |
@@ -170,6 +173,8 @@ CrimsonArb is an institutional-grade delta-neutral yield vault that uses AI ("Se
 | `/api/geo` | GET | Geolocation detection |
 | `/api/claw/execute` | POST | AgentSentry trade execution |
 | `/api/auth/*` | Various | OAuth authentication (Google, X) |
+| `/api/founders-waitlist` | GET/POST | Founders Vault waitlist management |
+| `/api/founders-waitlist/stats` | GET | Waitlist count and intended amounts |
 
 ### Libraries (9 libs)
 | Library | Purpose |
