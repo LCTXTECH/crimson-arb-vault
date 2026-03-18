@@ -277,6 +277,69 @@ curl -X POST https://crimsonarb.com/api/decisions/seed
 - [ ] Deploy Anchor programs to mainnet-beta
 - [ ] Configure production RPC (Helius/Triton)
 - [ ] Enable real deposits with caps ($10k initial)
+
+---
+
+## Phase 2: Ecosystem Expansion Strategy
+
+### Multi-Market Expansion (Immediate)
+Triple opportunity surface by adding BTC-PERP and ETH-PERP:
+
+| Market | Weight | Rationale |
+|--------|--------|-----------|
+| SOL-PERP | 40% | Highest funding volatility, native ecosystem |
+| BTC-PERP | 35% | Deepest liquidity, lowest slippage |
+| ETH-PERP | 25% | Consistent funding, correlation hedge |
+
+**Impact:** Move simulated APY from 23% to 30-38% through diversification.
+
+### 5 Ecosystem Integration Angles
+
+1. **Kamino Rate Module** (Q2 2026)
+   - Borrow USDC on Drift, lend to Kamino when spread > 2%
+   - Target: +3-5% additional yield
+
+2. **JitoSOL Collateral Strategy** (Q2 2026)
+   - Use JitoSOL instead of SOL for spot leg
+   - Staking yield (7-8%) + funding yield (15-20%) = 22-28% combined
+
+3. **Jupiter JLP Module** (Q3 2026)
+   - High-yield "Accelerated" tier targeting 50%+ APY
+   - Higher risk, separate vault tier
+
+4. **Zeta Cross-Venue Arbitrage** (Q3 2026)
+   - Exploit 10-second vs hourly funding rate divergence
+   - Requires dedicated market-making infrastructure
+
+5. **Parcl Real Estate Module** (Q4 2026)
+   - Uncorrelated alpha during crypto bear markets
+   - Real estate funding rates on Solana
+
+### Revenue Model at $5M AUM
+
+| Revenue Stream | Monthly | Annual |
+|----------------|---------|--------|
+| Vault Performance Fee (20%) | $16,667 | $200,000 |
+| API Pro ($49/mo × 200) | $9,800 | $117,600 |
+| API Institutional ($499/mo × 25) | $12,475 | $149,700 |
+| White-Label Setup (2/mo × $10K) | $20,000 | - |
+| White-Label Performance (20%) | - | ~$50,000 |
+| **Total** | ~$39,600/mo | **~$475,000/yr**
+
+### Content Marketing Blueprint (10 Pages)
+
+| Priority | Article | Target Keywords | Length |
+|----------|---------|-----------------|--------|
+| P0 | What is a Funding Rate? | funding rate explained | 3,000w |
+| P0 | Delta Neutral Trading on Solana | delta neutral solana | 2,500w |
+| P0 | Drift Protocol Complete Guide | drift protocol guide | 2,000w |
+| P1 | Passive Income on Solana | solana passive income | 2,000w |
+| P1 | JLP Delta Neutral Strategy | jlp delta neutral | 1,500w |
+| P1 | Kamino vs CrimsonARB | kamino finance review | 1,200w |
+| P2 | Funding Rate Arbitrage Guide | funding rate arbitrage | 1,500w |
+| P2 | JitoSOL Yield Guide | jitosol yield | 1,000w |
+| P2 | Safest DeFi Yield | safe defi yield | 1,200w |
+| P2 | DeFi Audit Trails | defi transparency | 1,500w |
 - [ ] Launch Phase 2 trigger monitoring
 
 ---
