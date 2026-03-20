@@ -4,6 +4,27 @@ import { createClient } from "@supabase/supabase-js"
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!
 
+// Webacy DD score generator for scenarios
+function generateWebacyScore(riskScore: number, isGuard: boolean) {
+  if (isGuard) {
+    return {
+      ddScore: 18 + Math.floor(Math.random() * 10),
+      riskLevel: 'CRITICAL' as const,
+      flags: { isSanctioned: false, hasSnipingHistory: true, ownershipConcentrated: true },
+      source: 'simulated' as const,
+      verifiedBy: 'Webacy DD.xyz' as const,
+    }
+  }
+  const score = 72 + Math.floor(Math.random() * 23)
+  return {
+    ddScore: score,
+    riskLevel: score >= 85 ? 'SAFE' as const : score >= 70 ? 'LOW' as const : 'MEDIUM' as const,
+    flags: { isSanctioned: false, hasSnipingHistory: score < 78, ownershipConcentrated: false },
+    source: 'simulated' as const,
+    verifiedBy: 'Webacy DD.xyz' as const,
+  }
+}
+
 // Realistic market scenarios demonstrating Sentry "Discipline"
 const SKIP_SCENARIOS = [
   {
@@ -385,10 +406,22 @@ export async function POST(request: Request) {
       risk_factors: {
         volatility: scenario.risk_score > 80 ? "HIGH" : scenario.risk_score > 60 ? "MEDIUM" : "LOW",
         liquidity: scenario.confidence_score > 70 ? "ADEQUATE" : "LIMITED",
-        decay_velocity: scenario.alpha_decay_hours < 2 ? "RAPID" : "NORMAL"
-      },
-      market_timestamp: timestamps[index].toISOString(),
-      created_at: timestamps[index].toISOString()
+decay_velocity: scenario.alpha_decay_hours < 2 ? "RAPID" : "NORMAL"
+  },
+  market_timestamp: timestamps[index].toISOString(),
+  created_at: timestamps[index].toISOString(),
+  // Webacy DD.xyz integration
+  webacy_dd_score: (() => {
+    const isGuard = scenario.decision_type === "GUARD"
+    const score = generateWebacyScore(scenario.risk_score, isGuard)
+    return score.ddScore
+  })(),
+  webacy_risk_level: scenario.decision_type === "GUARD" ? "CRITICAL" : scenario.risk_score > 70 ? "LOW" : "SAFE",
+  webacy_flags: scenario.decision_type === "GUARD" 
+    ? { hasSnipingHistory: true, ownershipConcentrated: true }
+    : { hasSnipingHistory: false, ownershipConcentrated: false },
+  webacy_verified_at: timestamps[index].toISOString(),
+  webacy_source: "simulated"
     }))
     
     const { data, error } = await supabase

@@ -5,6 +5,7 @@ import Link from "next/link"
 import { AgentSentryStatus } from "@/components/agent-sentry-status"
 import { InstitutionalMetrics } from "@/components/institutional-metrics"
 import { VIDEOS, ANCHOR_PROGRAMS, EXTERNAL_LINKS, CONTACT } from "@/lib/config"
+import { WebacyBadge, WebacyStatusIndicator, WebacySecuredBadge } from "@/components/webacy-badge"
 
 interface RecentDecision {
   id: string
@@ -22,7 +23,8 @@ export default function JudgesPage() {
     vault: "ACTIVE",
     sentryBrain: "PROCESSING",
     driftProtocol: "CONNECTED",
-    agentSentry: "CONNECTED"
+    agentSentry: "CONNECTED",
+    webacyDD: "CONNECTED"
   })
 
   useEffect(() => {
@@ -134,11 +136,14 @@ export default function JudgesPage() {
                 <div className="absolute -top-4 -left-2 w-10 h-10 rounded-full bg-emerald-500/20 border border-emerald-500 flex items-center justify-center font-mono font-bold text-emerald-500 text-xl">
                   3
                 </div>
-                <h3 className="font-mono font-semibold mt-4 mb-3 text-foreground">AgentSentry Security</h3>
+                <h3 className="font-mono font-semibold mt-4 mb-3 text-foreground">Three-Layer Security</h3>
                 <p className="text-sm text-muted-foreground leading-relaxed">
-                  Every EXECUTE passes through AgentSentry circuit-breakers before reaching Drift Protocol. 
-                  The only AI-native vault with <span className="text-emerald-400">pre-finality screening</span>.
+                  Every decision passes through <span className="text-primary">Sentry Brain</span>, <span className="text-amber-400">AgentSentry</span>, and <span className="text-emerald-400">Webacy DD.xyz</span>. 
+                  The only vault with third-party AI risk verification on every trade.
                 </p>
+                <div className="mt-3">
+                  <WebacyBadge variant="icon" score={84} riskLevel="SAFE" />
+                </div>
               </div>
             </div>
           </div>
@@ -179,6 +184,11 @@ export default function JudgesPage() {
                   <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
                   <span className="text-muted-foreground">AgentSentry:</span>
                   <span className="font-mono text-emerald-400">{systemStatus.agentSentry}</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                  <span className="text-muted-foreground">Webacy DD:</span>
+                  <span className="font-mono text-emerald-400">{systemStatus.webacyDD}</span>
                 </div>
               </div>
               <div className="mt-4 pt-4 border-t border-border flex items-center justify-between">

@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState, useCallback } from 'react'
-import { usePrivy, useSolanaWallets } from '@privy-io/react-auth'
+import { useAuth } from '@/contexts/auth-context'
 import { connectClient } from '@/lib/wallet-client'
 import {
   WalletShell,
@@ -23,15 +23,13 @@ type PageState =
   | 'error'
 
 export default function WalletConnectPage() {
-  const { ready, authenticated, user, login } = usePrivy()
-  const { wallets } = useSolanaWallets()
+  const { isAuthenticated, isLoading, walletAddress, login, user } = useAuth()
   const [state, setState] = useState<PageState>('loading')
-  const [connectionRequest, setConnectionRequest] = useState<any>(null)
+  const [connectionRequest, setConnectionRequest] = useState<ReturnType<typeof connectClient.getConnectionRequestFromUrlParams>>(null)
   const [requesterHost, setRequesterHost] = useState<string>('An app')
   const [error, setError] = useState<string | null>(null)
 
-  const primaryWallet = wallets.find((w) => w.walletClientType === 'privy') || wallets[0]
-  const address = primaryWallet?.address
+  const address = walletAddress
   const short = address ? `${address.slice(0, 6)}...${address.slice(-6)}` : null
 
   // Parse connection request on mount
@@ -45,7 +43,11 @@ export default function WalletConnectPage() {
       }
       setConnectionRequest(req)
       if (req.callbackUrl) {
-        setRequesterHost(new URL(req.callbackUrl).hostname)
+        try {
+          setRequesterHost(new URL(req.callbackUrl).hostname)
+        } catch {
+          // Invalid URL, keep default
+        }
       }
     } catch {
       setError('Could not parse connection request.')
@@ -55,46 +57,42 @@ export default function WalletConnectPage() {
 
   // Update page state when auth state settles
   useEffect(() => {
-    if (!ready || !connectionRequest) return
-    if (authenticated) {
+    if (isLoading || !connectionRequest) return
+    if (isAuthenticated) {
       setState('awaiting_approval')
     } else {
       setState('login_required')
     }
-  }, [ready, authenticated, connectionRequest])
+  }, [isLoading, isAuthenticated, connectionRequest])
 
   const handleApprove = useCallback(async () => {
-    if (!connectionRequest || !user || !address) return
+    if (!connectionRequest || !address) return
     setState('approving')
     try {
-      const accessToken = await user.getAccessToken?.()
       await connectClient.acceptConnection({
-        accessToken,
         address,
-        userId: user.id,
+        userId: user?.privyId || 'unknown',
         connectionRequest,
       })
       setState('done')
-    } catch (e) {
+    } catch {
       setError('Connection failed. Please try again.')
       setState('error')
     }
   }, [connectionRequest, user, address])
 
   const handleDeny = useCallback(async () => {
-    if (!connectionRequest || !user) return
+    if (!connectionRequest) return
     setState('denying')
     try {
-      const accessToken = await user.getAccessToken?.()
       await connectClient.rejectConnection({
-        accessToken,
         callbackUrl: connectionRequest.callbackUrl,
       })
       setState('done')
     } catch {
       setState('error')
     }
-  }, [connectionRequest, user])
+  }, [connectionRequest])
 
   return (
     <WalletShell>
