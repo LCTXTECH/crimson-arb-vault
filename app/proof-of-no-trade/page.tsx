@@ -5,6 +5,7 @@ import { motion } from "framer-motion"
 import Link from "next/link"
 import { SiteHeader } from "@/components/site-header"
 import { SiteFooter } from "@/components/site-footer"
+import { WebacyBadge, WebacySecuredBadge } from "@/components/webacy-badge"
 
 // Skip reason breakdown data with market distribution
 const SKIP_REASONS = [
@@ -123,6 +124,45 @@ export default function ProofOfNoTradePage() {
           >
             This is not a failure rate. This is discipline.
           </motion.p>
+        </div>
+      </section>
+
+      {/* Three-Layer Security Section */}
+      <section className="py-12 px-4 bg-muted/10 border-y border-border">
+        <div className="max-w-5xl mx-auto">
+          <h2 className="text-xl md:text-2xl font-mono font-bold text-foreground mb-2 text-center">
+            Three Independent Security Layers
+          </h2>
+          <p className="text-muted-foreground text-center mb-8 text-sm">
+            Every decision verified by three systems before reaching Drift Protocol
+          </p>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {/* Layer 1 */}
+            <div className="bg-card border border-border rounded-xl p-4">
+              <div className="text-primary font-mono text-xs mb-2">LAYER 1</div>
+              <div className="text-foreground font-semibold mb-1">Sentry Brain</div>
+              <div className="text-muted-foreground text-sm">
+                Internal AI evaluates funding rate, decay probability, and OI concentration on SOL, BTC, and ETH markets.
+              </div>
+            </div>
+            {/* Layer 2 */}
+            <div className="bg-card border border-border rounded-xl p-4">
+              <div className="text-amber-500 font-mono text-xs mb-2">LAYER 2</div>
+              <div className="text-foreground font-semibold mb-1">AgentSentry ATSP v1</div>
+              <div className="text-muted-foreground text-sm">
+                Pre-finality circuit-breaker. Screens every EXECUTE before it reaches Drift Protocol.
+              </div>
+            </div>
+            {/* Layer 3 — Webacy */}
+            <div className="bg-card border border-emerald-800/30 rounded-xl p-4">
+              <div className="text-emerald-400 font-mono text-xs mb-2">LAYER 3</div>
+              <div className="text-foreground font-semibold mb-1">Webacy DD.xyz</div>
+              <div className="text-muted-foreground text-sm mb-3">
+                Third-party AI risk intelligence. 400+ threat flags. Independent verification of every decision.
+              </div>
+              <WebacyBadge variant="compact" score={84} riskLevel="SAFE" />
+            </div>
+          </div>
         </div>
       </section>
 

@@ -2,6 +2,7 @@ import type { Metadata } from "next"
 import Link from "next/link"
 import { ChaosDemo } from "@/components/chaos-demo"
 import { SiteFooter } from "@/components/site-footer"
+import { WebacyBadge, WebacySecuredBadge } from "@/components/webacy-badge"
 
 export const metadata: Metadata = {
   title: "DeFi Flash Crash Protection — CrimsonARB GUARD Demo",
@@ -146,12 +147,18 @@ export default function ChaosDemoPage() {
                   <span className="text-muted-foreground">00:35</span>
                   <span>AgentSentry verdict: BLOCK</span>
                 </div>
+                <div className="flex items-start gap-2">
+                  <span className="text-muted-foreground">00:40</span>
+                  <span className="flex items-center gap-2">
+                    Webacy DD.xyz: <WebacyBadge variant="icon" score={18} riskLevel="CRITICAL" />
+                  </span>
+                </div>
                 <div className="flex items-start gap-2 text-emerald-500">
                   <span className="text-muted-foreground">00:45</span>
                   <span>Position never opened. $41,200 protected.</span>
                 </div>
                 <div className="pt-2 border-t border-border text-muted-foreground">
-                  Full GUARD entry logged with reasoning.
+                  Three layers confirmed GUARD. Full audit trail.
                 </div>
               </div>
             </div>

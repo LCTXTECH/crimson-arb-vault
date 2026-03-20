@@ -16,6 +16,7 @@ import { DevControlPanel } from "@/components/dev-control-panel"
 import { SentryDecisionMatrix } from "@/components/sentry-decision-matrix"
 import { JobuRitualOverlay } from "@/components/jobu-ritual-overlay"
 import { LiveSimulationV2 } from "@/components/live-simulation-v2"
+import { WebacyBadge } from "@/components/webacy-badge"
 
 // Devnet mock data with whale-sized positions
 const devnetTrades: DriftTradeData[] = [
