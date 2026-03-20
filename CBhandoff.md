@@ -180,8 +180,10 @@ CrimsonArb is an institutional-grade delta-neutral yield vault that uses AI ("Se
 | `/api/auth/sync` | POST | Privy user sync to Supabase profiles |
 | `/api/founders-waitlist` | GET/POST | Founders Vault waitlist management |
 | `/api/founders-waitlist/stats` | GET | Waitlist count and intended amounts |
+| `/api/simulation/tick` | GET | Cron-triggered simulation tick (5min) |
+| `/api/vault/metrics` | GET | Live vault metrics for dashboard |
 
-### Libraries (9 libs)
+### Libraries (12 libs)
 | Library | Purpose |
 |---------|---------|
 | `ai-reasoning.ts` | Sentry Brain decision engine |
@@ -190,6 +192,16 @@ CrimsonArb is an institutional-grade delta-neutral yield vault that uses AI ("Se
 | `drift/faucet.ts` | Devnet SOL/USDC faucet + Jobu ritual |
 | `solana-config.ts` | Network configuration helper |
 | `transaction.ts` | Versioned transaction builder |
+| `vault-constants.ts` | All vault parameters (fees, thresholds, caps) |
+| `simulation-engine.ts` | Deterministic devnet simulation engine |
+| `webacy.ts` | Webacy DD.xyz third-party risk API |
+| `mainnet/vault-executor.ts` | Production vault execution (stubbed) |
+| `mainnet/drift-executor.ts` | Production Drift integration (stubbed) |
+
+### Hooks (1 hook)
+| Hook | Purpose |
+|------|---------|
+| `use-vault-metrics.ts` | SWR hook for live vault metrics |
 
 ### Solana Programs (Anchor/Rust)
 | Program | Location | Description |
@@ -206,7 +218,7 @@ CrimsonArb is an institutional-grade delta-neutral yield vault that uses AI ("Se
 |-------|---------|-----|
 | `profiles` | User wallet addresses, delegation status | User-own only |
 | `trade_actions` | Execution audit trail | Public read |
-| `vault_state` | TVL, APY, profit tracking | Public read |
+| `vault_state` | TVL, APY, simulation state, metrics | Public read |
 | `ai_decisions` | ALL AI reasoning (including skips) | Public read |
 | `dev_feedback` | Sandbox developer feedback | Public read/write |
 | `sandbox_sessions` | Devnet tester sessions | Public read/write |
