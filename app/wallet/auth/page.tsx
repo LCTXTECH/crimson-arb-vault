@@ -66,8 +66,8 @@ export default function WalletAuthPage() {
       await authClient.acceptConnection({
         codeChallenge: req.codeChallenge!,
         codeChallengeMethod: req.codeChallengeMethod!,
-        state: req.state,
-        oauthClientId: req.oauthClientId,
+        state: req.state ?? undefined,
+        oauthClientId: req.oauthClientId ?? undefined,
       })
       setState('done')
     } catch {
@@ -83,8 +83,8 @@ export default function WalletAuthPage() {
       await authClient.rejectConnection({
         codeChallenge: req.codeChallenge!,
         codeChallengeMethod: req.codeChallengeMethod!,
-        state: req.state,
-        oauthClientId: req.oauthClientId,
+        state: req.state ?? undefined,
+        oauthClientId: req.oauthClientId ?? undefined,
       })
       setState('done')
     } catch {
