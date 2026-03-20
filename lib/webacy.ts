@@ -1,5 +1,3 @@
-"use server"
-
 /**
  * Webacy DD.xyz Integration
  * Third-party AI risk intelligence - Layer 3 of CrimsonARB security stack

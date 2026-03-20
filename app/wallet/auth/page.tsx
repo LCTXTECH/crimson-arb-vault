@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState, useCallback } from 'react'
-import { usePrivy } from '@privy-io/react-auth'
+import { useAuth } from '@/contexts/auth-context'
 import { authClient } from '@/lib/wallet-client'
 import {
   WalletShell,
@@ -23,13 +23,13 @@ type PageState =
   | 'error'
 
 export default function WalletAuthPage() {
-  const { ready, authenticated, user, login } = usePrivy()
+  const { isAuthenticated, isLoading, login, user } = useAuth()
   const [state, setState] = useState<PageState>('loading')
-  const [req, setReq] = useState<any>(null)
+  const [req, setReq] = useState<ReturnType<typeof authClient.getConnectionRequestFromUrlParams>>(null)
   const [requesterHost, setRequesterHost] = useState<string>('An app')
   const [error, setError] = useState<string | null>(null)
 
-  const displayEmail = user?.google?.email || user?.email?.address || null
+  const displayEmail = user?.email || null
 
   useEffect(() => {
     try {
@@ -44,7 +44,9 @@ export default function WalletAuthPage() {
       if (cb) {
         try {
           setRequesterHost(new URL(cb).hostname)
-        } catch {}
+        } catch {
+          // Invalid URL, keep default
+        }
       }
     } catch {
       setError('Could not parse auth request.')
@@ -53,17 +55,15 @@ export default function WalletAuthPage() {
   }, [])
 
   useEffect(() => {
-    if (!ready || !req) return
-    setState(authenticated ? 'awaiting_approval' : 'login_required')
-  }, [ready, authenticated, req])
+    if (isLoading || !req) return
+    setState(isAuthenticated ? 'awaiting_approval' : 'login_required')
+  }, [isLoading, isAuthenticated, req])
 
   const handleApprove = useCallback(async () => {
-    if (!req || !user) return
+    if (!req) return
     setState('approving')
     try {
-      const accessToken = await user.getAccessToken?.()
       await authClient.acceptConnection({
-        accessToken,
         codeChallenge: req.codeChallenge!,
         codeChallengeMethod: req.codeChallengeMethod!,
         state: req.state,
@@ -74,15 +74,13 @@ export default function WalletAuthPage() {
       setError('Authorization failed. Please try again.')
       setState('error')
     }
-  }, [req, user])
+  }, [req])
 
   const handleDeny = useCallback(async () => {
-    if (!req || !user) return
+    if (!req) return
     setState('denying')
     try {
-      const accessToken = await user.getAccessToken?.()
       await authClient.rejectConnection({
-        accessToken,
         codeChallenge: req.codeChallenge!,
         codeChallengeMethod: req.codeChallengeMethod!,
         state: req.state,
@@ -92,7 +90,7 @@ export default function WalletAuthPage() {
     } catch {
       setState('error')
     }
-  }, [req, user])
+  }, [req])
 
   return (
     <WalletShell>
