@@ -568,6 +568,46 @@ Global wallet pages designed for zero-code migration to `wallet.bcblock.net`:
 
 ---
 
+## Drift Attack Replay Demo
+
+### Status: COMPLETE
+
+**Purpose:** 75-second cinematic demonstration showing how CrimsonARB's three-layer security would have blocked the $285M Drift Protocol exploit.
+
+### Files
+
+| File | Purpose |
+|------|---------|
+| `components/drift-attack-replay.tsx` | Main replay component with hex grid |
+| `app/drift-replay/page.tsx` | Page wrapper with metadata |
+
+### 5-Phase State Machine
+
+| Phase | Duration | Action |
+|-------|----------|--------|
+| `IDLE` | - | Waiting for start |
+| `PHASE_1` | 25s | Sentry Brain detects CVT anomalies -> SKIP |
+| `PHASE_2` | 25s | AgentSentry detects governance migration -> GUARD |
+| `PHASE_3` | 25s | Webacy DD detects Tornado Cash origin -> BLOCK |
+| `COMPLETE` | - | "$285,000,000 PROTECTED" |
+
+### Visual Features
+
+- **3-column layout:** Attack Timeline (left), Hex Grid (center), Decision Log (right)
+- **Hex states:** IDLE -> SCANNING -> ACTIVE -> SKIP/GUARD/BLOCK -> SAFE
+- **Circuit Break overlay** during Phase 2
+- **Real-time decision logging** with timestamps
+- **Progress bar** with phase markers and speed control (1x/2x)
+- **Vault status bar:** OPERATIONAL -> GUARDED -> PROTECTED
+
+### Attack Vectors Demonstrated
+
+1. **Layer 1 (Sentry Brain):** Fake CVT token with manufactured price history
+2. **Layer 2 (AgentSentry):** Governance migration removing 48h timelock
+3. **Layer 3 (Webacy DD):** Attacker wallet from Tornado Cash, 8 days old
+
+---
+
 ## Webacy DD.xyz Integration
 
 ### Status: ACTIVE (Simulated Data)
