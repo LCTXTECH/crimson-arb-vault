@@ -49,8 +49,10 @@ CrimsonARB is an institutional-grade delta-neutral yield vault using AI ("Sentry
 
 ### URLs
 - **Production:** https://crimsonarb.com
+- **Judges Page:** https://crimsonarb.com/judges (PRIMARY HACKATHON PAGE)
+- **Drift Replay:** https://crimsonarb.com/drift-replay (75s Security Demo)
+- **Submission:** https://crimsonarb.com/submission (Superteam Copy)
 - **Sandbox:** https://crimsonarb.com/sandbox
-- **Judges Page:** https://crimsonarb.com/judges
 - **Chaos Demo:** https://crimsonarb.com/chaos-demo
 
 ---
@@ -102,7 +104,7 @@ CrimsonARB is an institutional-grade delta-neutral yield vault using AI ("Sentry
 │                                             ┌──────────────────────────┐    │
 │                                             │  cToken Market Program   │    │
 │                                             │  (Liquidity Pool)        │    │
-│                                             └──────────────────────────┘    │
+│                                             └─��────────────────────────┘    │
 └─────────────────────────────────────────────────────────────────────────────┘
 ```
 
