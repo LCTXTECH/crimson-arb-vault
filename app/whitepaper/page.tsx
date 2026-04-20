@@ -273,7 +273,7 @@ export default function WhitepaperPage() {
                   <pre className="text-xs md:text-sm font-mono text-muted-foreground whitespace-pre">
 {`┌─────────────────────────────────────────────────────────────────┐
 │                        FRONTEND LAYER                            │
-│  ┌─────────────┐  ┌──────────────┐  ┌─────────────────────────┐ │
+│  ┌─────────────┐  ┌──────────────┐  ┌──────────────────���──────┐ │
 │  │  Dashboard  │  │   Sandbox    │  │  Transparency Report    │ │
 │  │  (Next.js)  │  │   (Devnet)   │  │  (Charts + Audit Log)   │ │
 │  └─────────────┘  └──────────────┘  └─────────────────────────┘ │
@@ -681,6 +681,12 @@ GUARD (circuit breaker) if:
                   className="flex items-center justify-center gap-2 px-6 py-3 bg-card border border-border rounded-lg hover:border-primary transition-colors text-sm font-mono"
                 >
                   Try Devnet Sandbox
+                </Link>
+                <Link
+                  href="/security-architecture"
+                  className="flex items-center justify-center gap-2 px-6 py-3 bg-card border border-primary/50 rounded-lg hover:border-primary transition-colors text-sm font-mono"
+                >
+                  Three-Layer Security Architecture
                 </Link>
               </div>
             </section>

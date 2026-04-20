@@ -159,7 +159,7 @@ Pre-finality screening before any Drift execution:
 
 ## File Inventory
 
-### Pages (26 pages)
+### Pages (29 pages)
 
 | Route | File | Purpose |
 |-------|------|---------|
@@ -168,7 +168,10 @@ Pre-finality screening before any Drift execution:
 | `/transparency` | `app/transparency/page.tsx` | Investor report with charts |
 | `/proof-of-no-trade` | `app/proof-of-no-trade/page.tsx` | Skip manifesto page |
 | `/whitepaper` | `app/whitepaper/page.tsx` | Technical whitepaper with TOC |
-| `/judges` | `app/judges/page.tsx` | Hackathon submission (noindex) |
+| `/judges` | `app/judges/page.tsx` | **PRIMARY** Hackathon landing - $285M narrative |
+| `/drift-replay` | `app/drift-replay/page.tsx` | **FEATURED** 75s attack replay demo |
+| `/submission` | `app/submission/page.tsx` | Copy-ready Superteam submission |
+| `/security-architecture` | `app/security-architecture/page.tsx` | **DOCS** Three-layer security (Google Docs ready) |
 | `/admin/submission` | `app/admin/submission/page.tsx` | War room (noindex) |
 | `/mainnet-roadmap` | `app/mainnet-roadmap/page.tsx` | Deployment timeline |
 | `/chaos-demo` | `app/chaos-demo/page.tsx` | 60s GUARD demo for video |

@@ -716,6 +716,14 @@ export default async function JudgesPage() {
               <Map className="w-6 h-6" style={{ color: '#94a3b8' }} />
               <span className="text-sm font-medium" style={{ color: '#f1f5f9' }}>Mainnet Roadmap</span>
             </Link>
+            <Link 
+              href="/security-architecture"
+              className="rounded-xl p-4 flex flex-col items-center gap-2 transition-transform hover:-translate-y-1"
+              style={{ backgroundColor: '#0f172a', border: '1px solid #dc2626' }}
+            >
+              <Shield className="w-6 h-6" style={{ color: '#dc2626' }} />
+              <span className="text-sm font-medium" style={{ color: '#f1f5f9' }}>Security Architecture</span>
+            </Link>
           </div>
         </div>
       </section>
