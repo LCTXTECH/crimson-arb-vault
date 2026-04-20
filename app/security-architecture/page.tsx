@@ -1,40 +1,24 @@
-{`import { Metadata } from 'next'
+"use client"
+
 import Link from 'next/link'
 import { ArrowLeft, Shield, Brain, AlertTriangle, Search, CheckCircle, XCircle, ExternalLink } from 'lucide-react'
-
-export const metadata: Metadata = {
-  title: 'Three-Layer Security Architecture | CrimsonARB',
-  description: 'Complete technical documentation of CrimsonARB\\'s three-layer security model: Sentry Brain AI, AgentSentry ATSP, and Webacy DD.xyz integration.',
-}
 
 export default function SecurityArchitecturePage() {
   return (
     <div className="min-h-screen bg-[#0a0a0f] text-[#f1f5f9]">
-      {/* Print-friendly styles */}
-      <style jsx global>{\`
-        @media print {
-          body { background: white !important; color: black !important; }
-          .no-print { display: none !important; }
-          .print-break { page-break-before: always; }
-          a { color: black !important; text-decoration: underline !important; }
-        }
-      \`}</style>
-
       {/* Navigation */}
-      <nav className="no-print sticky top-0 z-50 bg-[#0a0a0f]/95 backdrop-blur border-b border-[#1e293b]">
+      <nav className="sticky top-0 z-50 bg-[#0a0a0f]/95 backdrop-blur border-b border-[#1e293b]">
         <div className="max-w-4xl mx-auto px-6 py-4 flex items-center justify-between">
           <Link href="/judges" className="flex items-center gap-2 text-[#94a3b8] hover:text-white transition-colors">
             <ArrowLeft className="w-4 h-4" />
             Back to Judges
           </Link>
-          <div className="flex items-center gap-4">
-            <button 
-              onClick={() => window.print()} 
-              className="text-sm text-[#94a3b8] hover:text-white transition-colors"
-            >
-              Print / Save as PDF
-            </button>
-          </div>
+          <button 
+            onClick={() => window.print()} 
+            className="text-sm text-[#94a3b8] hover:text-white transition-colors"
+          >
+            Print / Save as PDF
+          </button>
         </div>
       </nav>
 
@@ -75,7 +59,7 @@ export default function SecurityArchitecturePage() {
             </p>
             <div className="mt-6 p-4 bg-[#10b981]/10 border border-[#10b981]/30 rounded-lg">
               <p className="text-[#10b981] font-mono text-center">
-                3 Attack Vectors Detected → 3 Attack Vectors Blocked → $0 Lost
+                3 Attack Vectors Detected - 3 Attack Vectors Blocked - $0 Lost
               </p>
             </div>
           </div>
@@ -90,37 +74,60 @@ export default function SecurityArchitecturePage() {
             signal, the operation is blocked.
           </p>
           
-          {/* Flow Diagram */}
+          {/* Flow Diagram - CSS Based */}
           <div className="bg-[#0f172a] border border-[#1e293b] rounded-lg p-6 mb-6 overflow-x-auto">
-            <div className="font-mono text-sm min-w-[600px]">
-              <pre className="text-[#94a3b8]">{`
-┌─────────────────┐     ┌─────────────────┐     ┌─────────────────┐     ┌─────────────────┐
-│  YIELD SOURCE   │────▶│  SENTRY BRAIN   │────▶│  AGENTSENTRY    │────▶│  WEBACY DD.XYZ  │
-│                 │     │  (Layer 1)      │     │  (Layer 2)      │     │  (Layer 3)      │
-│  Drift, Jupiter │     │  AI Reasoning   │     │  Circuit Break  │     │  Risk Screen    │
-│  Zeta, Kamino   │     │                 │     │                 │     │                 │
-└─────────────────┘     └────────┬────────┘     └────────┬────────┘     └────────┬────────┘
-                                 │                       │                       │
-                                 ▼                       ▼                       ▼
-                        ┌────────────────┐      ┌────────────────┐      ┌────────────────┐
-                        │ EXECUTE / SKIP │      │ OPERATIONAL /  │      │ APPROVED /     │
-                        │ GUARD / DEFER  │      │ GUARD          │      │ BLOCK          │
-                        └────────────────┘      └────────────────┘      └────────────────┘
-                                 │                       │                       │
-                                 └───────────────────────┼───────────────────────┘
-                                                         ▼
-                                              ┌─────────────────────┐
-                                              │   ALL THREE MUST    │
-                                              │   APPROVE TO        │
-                                              │   EXECUTE           │
-                                              └─────────────────────┘
-              `}</pre>
+            <div className="flex flex-col gap-4 min-w-[700px]">
+              {/* Top Row - Main Flow */}
+              <div className="flex items-center justify-center gap-2">
+                <div className="border border-[#1e293b] rounded px-4 py-3 text-center min-w-[140px]">
+                  <div className="font-mono text-xs text-[#94a3b8]">YIELD SOURCE</div>
+                  <div className="text-xs text-[#64748b] mt-1">Drift, Jupiter, Zeta</div>
+                </div>
+                <div className="text-[#94a3b8]">{"->"}</div>
+                <div className="border border-[#f59e0b] rounded px-4 py-3 text-center min-w-[140px]">
+                  <div className="font-mono text-xs text-[#f59e0b]">SENTRY BRAIN</div>
+                  <div className="text-xs text-[#64748b] mt-1">Layer 1 - AI</div>
+                </div>
+                <div className="text-[#94a3b8]">{"->"}</div>
+                <div className="border border-[#dc2626] rounded px-4 py-3 text-center min-w-[140px]">
+                  <div className="font-mono text-xs text-[#dc2626]">AGENTSENTRY</div>
+                  <div className="text-xs text-[#64748b] mt-1">Layer 2 - Circuit</div>
+                </div>
+                <div className="text-[#94a3b8]">{"->"}</div>
+                <div className="border border-[#dc2626] rounded px-4 py-3 text-center min-w-[140px]">
+                  <div className="font-mono text-xs text-[#dc2626]">WEBACY DD</div>
+                  <div className="text-xs text-[#64748b] mt-1">Layer 3 - Risk</div>
+                </div>
+              </div>
+              {/* Output Row */}
+              <div className="flex items-center justify-center gap-2 pl-[160px]">
+                <div className="text-center min-w-[140px]">
+                  <div className="text-[#94a3b8] text-xs">|</div>
+                  <div className="text-[#f59e0b] font-mono text-xs">EXECUTE/SKIP</div>
+                </div>
+                <div className="min-w-[40px]"></div>
+                <div className="text-center min-w-[140px]">
+                  <div className="text-[#94a3b8] text-xs">|</div>
+                  <div className="text-[#dc2626] font-mono text-xs">OPERATIONAL/GUARD</div>
+                </div>
+                <div className="min-w-[40px]"></div>
+                <div className="text-center min-w-[140px]">
+                  <div className="text-[#94a3b8] text-xs">|</div>
+                  <div className="text-[#dc2626] font-mono text-xs">APPROVED/BLOCK</div>
+                </div>
+              </div>
+              {/* Final Row */}
+              <div className="flex justify-center">
+                <div className="border border-[#10b981] bg-[#10b981]/10 rounded px-6 py-3 text-center">
+                  <div className="font-mono text-sm text-[#10b981]">ALL THREE MUST APPROVE TO EXECUTE</div>
+                </div>
+              </div>
             </div>
           </div>
         </section>
 
         {/* Layer 1: Sentry Brain */}
-        <section className="mb-12 print-break">
+        <section className="mb-12">
           <div className="flex items-center gap-3 mb-4">
             <div className="w-10 h-10 rounded-lg bg-[#f59e0b]/20 flex items-center justify-center">
               <Brain className="w-5 h-5 text-[#f59e0b]" />
@@ -200,7 +207,6 @@ export default function SecurityArchitecturePage() {
                 <div className="border-t border-[#1e293b] my-3"></div>
                 <div className="text-[#f59e0b]">DECISION:     SKIP</div>
                 <div className="text-[#94a3b8]">Reason:       Manufactured price history detected.</div>
-                <div className="text-[#94a3b8]">              Insufficient organic market depth.</div>
               </div>
               <div className="mt-4 p-3 bg-[#f59e0b]/10 border border-[#f59e0b]/30 rounded">
                 <p className="text-[#f59e0b] text-sm font-mono">
@@ -212,7 +218,7 @@ export default function SecurityArchitecturePage() {
         </section>
 
         {/* Layer 2: AgentSentry */}
-        <section className="mb-12 print-break">
+        <section className="mb-12">
           <div className="flex items-center gap-3 mb-4">
             <div className="w-10 h-10 rounded-lg bg-[#dc2626]/20 flex items-center justify-center">
               <AlertTriangle className="w-5 h-5 text-[#dc2626]" />
@@ -255,20 +261,6 @@ export default function SecurityArchitecturePage() {
               </ul>
             </div>
 
-            <div>
-              <h3 className="text-lg font-semibold text-white mb-2">Decision Outputs</h3>
-              <div className="grid grid-cols-2 gap-4">
-                <div className="bg-[#10b981]/10 border border-[#10b981]/30 rounded-lg p-3 text-center">
-                  <div className="text-[#10b981] font-mono font-bold">OPERATIONAL</div>
-                  <div className="text-xs text-[#94a3b8]">Protocol healthy</div>
-                </div>
-                <div className="bg-[#dc2626]/10 border border-[#dc2626]/30 rounded-lg p-3 text-center">
-                  <div className="text-[#dc2626] font-mono font-bold">GUARD</div>
-                  <div className="text-xs text-[#94a3b8]">Circuit break active</div>
-                </div>
-              </div>
-            </div>
-
             <div className="bg-[#0f172a] border border-[#dc2626]/30 rounded-lg p-6">
               <h3 className="text-lg font-semibold text-white mb-3">Drift Attack Case Study: Layer 2 Response</h3>
               <p className="text-[#94a3b8] mb-4">
@@ -278,13 +270,12 @@ export default function SecurityArchitecturePage() {
               <div className="font-mono text-sm bg-[#0a0a0f] rounded-lg p-4">
                 <div className="text-[#94a3b8]">Protocol:     Drift Security Council</div>
                 <div className="text-[#94a3b8]">Event:        <span className="text-[#dc2626]">GOVERNANCE_MIGRATION</span></div>
-                <div className="text-[#94a3b8]">Timelock:     <span className="text-[#dc2626]">48h → 0h [REMOVED]</span></div>
+                <div className="text-[#94a3b8]">Timelock:     <span className="text-[#dc2626]">48h to 0h [REMOVED]</span></div>
                 <div className="text-[#94a3b8]">Threshold:    <span className="text-[#dc2626]">Changed to 2/5</span></div>
                 <div className="border-t border-[#1e293b] my-3"></div>
                 <div className="text-[#dc2626]">STATUS:       CIRCUIT BREAK</div>
                 <div className="text-[#dc2626]">DECISION:     GUARD</div>
                 <div className="text-[#94a3b8]">Action:       All positions suspended.</div>
-                <div className="text-[#94a3b8]">              Pending protocol review.</div>
               </div>
               <div className="mt-4 p-3 bg-[#dc2626]/10 border border-[#dc2626]/30 rounded">
                 <p className="text-[#dc2626] text-sm font-mono">
@@ -296,7 +287,7 @@ export default function SecurityArchitecturePage() {
         </section>
 
         {/* Layer 3: Webacy DD.xyz */}
-        <section className="mb-12 print-break">
+        <section className="mb-12">
           <div className="flex items-center gap-3 mb-4">
             <div className="w-10 h-10 rounded-lg bg-[#dc2626]/20 flex items-center justify-center">
               <Search className="w-5 h-5 text-[#dc2626]" />
@@ -313,8 +304,7 @@ export default function SecurityArchitecturePage() {
               <p className="text-[#94a3b8] leading-relaxed">
                 Webacy DD.xyz is a third-party AI risk intelligence platform that screens 
                 counterparty wallets against on-chain risk signals. It provides independent 
-                verification outside of CrimsonARB&apos;s internal systems, adding a layer of 
-                external validation.
+                verification outside of CrimsonARB&apos;s internal systems.
               </p>
             </div>
 
@@ -335,42 +325,16 @@ export default function SecurityArchitecturePage() {
                 </li>
                 <li className="flex items-start gap-2">
                   <Shield className="w-4 h-4 text-[#dc2626] mt-1 flex-shrink-0" />
-                  <span><strong>Interaction History:</strong> Known exploit contracts, phishing wallets</span>
+                  <span><strong>Protocol History:</strong> Past exploit involvement, rug pull associations</span>
                 </li>
               </ul>
-            </div>
-
-            <div>
-              <h3 className="text-lg font-semibold text-white mb-2">Risk Levels</h3>
-              <div className="grid grid-cols-2 md:grid-cols-5 gap-2">
-                <div className="bg-[#10b981]/10 border border-[#10b981]/30 rounded-lg p-2 text-center">
-                  <div className="text-[#10b981] font-mono text-sm font-bold">SAFE</div>
-                  <div className="text-xs text-[#94a3b8]">85-100</div>
-                </div>
-                <div className="bg-[#22c55e]/10 border border-[#22c55e]/30 rounded-lg p-2 text-center">
-                  <div className="text-[#22c55e] font-mono text-sm font-bold">LOW</div>
-                  <div className="text-xs text-[#94a3b8]">70-84</div>
-                </div>
-                <div className="bg-[#f59e0b]/10 border border-[#f59e0b]/30 rounded-lg p-2 text-center">
-                  <div className="text-[#f59e0b] font-mono text-sm font-bold">MEDIUM</div>
-                  <div className="text-xs text-[#94a3b8]">50-69</div>
-                </div>
-                <div className="bg-[#ef4444]/10 border border-[#ef4444]/30 rounded-lg p-2 text-center">
-                  <div className="text-[#ef4444] font-mono text-sm font-bold">HIGH</div>
-                  <div className="text-xs text-[#94a3b8]">25-49</div>
-                </div>
-                <div className="bg-[#dc2626]/10 border border-[#dc2626]/30 rounded-lg p-2 text-center">
-                  <div className="text-[#dc2626] font-mono text-sm font-bold">CRITICAL</div>
-                  <div className="text-xs text-[#94a3b8]">0-24</div>
-                </div>
-              </div>
             </div>
 
             <div className="bg-[#0f172a] border border-[#dc2626]/30 rounded-lg p-6">
               <h3 className="text-lg font-semibold text-white mb-3">Drift Attack Case Study: Layer 3 Response</h3>
               <p className="text-[#94a3b8] mb-4">
-                The attacker wallets originated from Tornado Cash, were only 8 days old, and 
-                showed no organic on-chain history. Webacy DD.xyz&apos;s analysis:
+                The attacker wallets originated from Tornado Cash, were 8 days old, and funded 
+                via a privacy mixer. Webacy DD.xyz analysis:
               </p>
               <div className="font-mono text-sm bg-[#0a0a0f] rounded-lg p-4">
                 <div className="text-[#94a3b8]">Wallet:       8Xk...9mR</div>
@@ -382,7 +346,6 @@ export default function SecurityArchitecturePage() {
                 <div className="text-[#dc2626]">RISK LEVEL:   CRITICAL</div>
                 <div className="text-[#dc2626]">DECISION:     BLOCK</div>
                 <div className="text-[#94a3b8]">Action:       Counterparty rejected.</div>
-                <div className="text-[#94a3b8]">              Interaction terminated.</div>
               </div>
               <div className="mt-4 p-3 bg-[#dc2626]/10 border border-[#dc2626]/30 rounded">
                 <p className="text-[#dc2626] text-sm font-mono">
@@ -393,95 +356,62 @@ export default function SecurityArchitecturePage() {
           </div>
         </section>
 
-        {/* Combined Defense */}
-        <section className="mb-12 print-break">
+        {/* Summary */}
+        <section className="mb-12">
           <h2 className="text-2xl font-bold mb-4 text-white">Combined Defense Summary</h2>
-          
-          <div className="bg-[#10b981]/10 border border-[#10b981]/30 rounded-lg p-6 mb-6">
-            <p className="text-[#10b981] font-mono text-xl text-center mb-4">
-              3 Attack Vectors Detected → 3 Attack Vectors Blocked → $0 Lost
-            </p>
-            <p className="text-[#94a3b8] text-center">
-              This is not a post-hoc analysis. This is how CrimsonARB&apos;s architecture 
-              operates on every trade.
-            </p>
-          </div>
-
-          <div className="overflow-x-auto">
+          <div className="bg-[#10b981]/10 border border-[#10b981]/30 rounded-lg p-6">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-[#1e293b]">
-                  <th className="text-left py-3 px-4 text-[#94a3b8]">Layer</th>
-                  <th className="text-left py-3 px-4 text-[#94a3b8]">Attack Vector</th>
-                  <th className="text-left py-3 px-4 text-[#94a3b8]">Detection Signal</th>
-                  <th className="text-left py-3 px-4 text-[#94a3b8]">Response</th>
+                <tr className="text-[#10b981]">
+                  <th className="text-left py-2">Attack Vector</th>
+                  <th className="text-left py-2">Layer</th>
+                  <th className="text-left py-2">Response</th>
                 </tr>
               </thead>
-              <tbody>
-                <tr className="border-b border-[#1e293b]/50">
-                  <td className="py-3 px-4 text-[#f59e0b] font-mono">Layer 1</td>
-                  <td className="py-3 px-4 text-[#94a3b8]">Fake CVT collateral</td>
-                  <td className="py-3 px-4 text-[#94a3b8]">Wash trading, shallow liquidity</td>
-                  <td className="py-3 px-4 text-[#f59e0b] font-mono">SKIP</td>
+              <tbody className="text-[#94a3b8]">
+                <tr className="border-t border-[#1e293b]">
+                  <td className="py-2">Fake CVT token</td>
+                  <td className="py-2">Sentry Brain</td>
+                  <td className="py-2 text-[#f59e0b]">SKIP</td>
                 </tr>
-                <tr className="border-b border-[#1e293b]/50">
-                  <td className="py-3 px-4 text-[#dc2626] font-mono">Layer 2</td>
-                  <td className="py-3 px-4 text-[#94a3b8]">Governance migration</td>
-                  <td className="py-3 px-4 text-[#94a3b8]">Timelock removed, 2/5 threshold</td>
-                  <td className="py-3 px-4 text-[#dc2626] font-mono">GUARD</td>
+                <tr className="border-t border-[#1e293b]">
+                  <td className="py-2">Governance migration</td>
+                  <td className="py-2">AgentSentry</td>
+                  <td className="py-2 text-[#dc2626]">GUARD</td>
                 </tr>
-                <tr>
-                  <td className="py-3 px-4 text-[#dc2626] font-mono">Layer 3</td>
-                  <td className="py-3 px-4 text-[#94a3b8]">Attacker wallet</td>
-                  <td className="py-3 px-4 text-[#94a3b8]">TC origin, 8-day wallet age</td>
-                  <td className="py-3 px-4 text-[#dc2626] font-mono">BLOCK</td>
+                <tr className="border-t border-[#1e293b]">
+                  <td className="py-2">Tornado Cash wallet</td>
+                  <td className="py-2">Webacy DD.xyz</td>
+                  <td className="py-2 text-[#dc2626]">BLOCK</td>
                 </tr>
               </tbody>
             </table>
+            <div className="mt-6 pt-4 border-t border-[#10b981]/30 text-center">
+              <p className="text-xl font-mono text-[#10b981]">
+                Result: $285,000,000 PROTECTED
+              </p>
+            </div>
           </div>
         </section>
 
-        {/* Key Metrics */}
+        {/* Related Links */}
         <section className="mb-12">
-          <h2 className="text-2xl font-bold mb-4 text-white">Operational Metrics</h2>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div className="bg-[#0f172a] border border-[#1e293b] rounded-lg p-4 text-center">
-              <div className="text-3xl font-mono font-bold text-[#dc2626]">79%</div>
-              <div className="text-sm text-[#94a3b8]">Skip Rate</div>
-            </div>
-            <div className="bg-[#0f172a] border border-[#1e293b] rounded-lg p-4 text-center">
-              <div className="text-3xl font-mono font-bold text-white">21%</div>
-              <div className="text-sm text-[#94a3b8]">Execute Rate</div>
-            </div>
-            <div className="bg-[#0f172a] border border-[#1e293b] rounded-lg p-4 text-center">
-              <div className="text-3xl font-mono font-bold text-[#10b981]">$0</div>
-              <div className="text-sm text-[#94a3b8]">Funds Lost</div>
-            </div>
-            <div className="bg-[#0f172a] border border-[#1e293b] rounded-lg p-4 text-center">
-              <div className="text-3xl font-mono font-bold text-[#f59e0b]">3</div>
-              <div className="text-sm text-[#94a3b8]">Security Layers</div>
-            </div>
-          </div>
-        </section>
-
-        {/* Links */}
-        <section className="mb-12 no-print">
           <h2 className="text-2xl font-bold mb-4 text-white">Related Documentation</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <Link href="/whitepaper" className="bg-[#0f172a] border border-[#1e293b] rounded-lg p-4 hover:border-[#dc2626]/50 transition-colors flex items-center justify-between">
-              <span className="text-white">Technical Whitepaper</span>
+            <Link href="/whitepaper" className="flex items-center justify-between p-4 bg-[#0f172a] border border-[#1e293b] rounded-lg hover:border-[#dc2626] transition-colors">
+              <span className="text-[#f1f5f9]">Technical Whitepaper</span>
               <ExternalLink className="w-4 h-4 text-[#94a3b8]" />
             </Link>
-            <Link href="/drift-replay" className="bg-[#0f172a] border border-[#1e293b] rounded-lg p-4 hover:border-[#dc2626]/50 transition-colors flex items-center justify-between">
-              <span className="text-white">Drift Attack Replay Demo</span>
+            <Link href="/judges" className="flex items-center justify-between p-4 bg-[#0f172a] border border-[#1e293b] rounded-lg hover:border-[#dc2626] transition-colors">
+              <span className="text-[#f1f5f9]">Judges Landing Page</span>
               <ExternalLink className="w-4 h-4 text-[#94a3b8]" />
             </Link>
-            <Link href="/proof-of-no-trade" className="bg-[#0f172a] border border-[#1e293b] rounded-lg p-4 hover:border-[#dc2626]/50 transition-colors flex items-center justify-between">
-              <span className="text-white">Proof of No-Trade</span>
+            <Link href="/drift-replay" className="flex items-center justify-between p-4 bg-[#0f172a] border border-[#1e293b] rounded-lg hover:border-[#dc2626] transition-colors">
+              <span className="text-[#f1f5f9]">Drift Attack Replay Demo</span>
               <ExternalLink className="w-4 h-4 text-[#94a3b8]" />
             </Link>
-            <Link href="/transparency" className="bg-[#0f172a] border border-[#1e293b] rounded-lg p-4 hover:border-[#dc2626]/50 transition-colors flex items-center justify-between">
-              <span className="text-white">Transparency Report</span>
+            <Link href="/proof-of-no-trade" className="flex items-center justify-between p-4 bg-[#0f172a] border border-[#1e293b] rounded-lg hover:border-[#dc2626] transition-colors">
+              <span className="text-[#f1f5f9]">Proof of No-Trade</span>
               <ExternalLink className="w-4 h-4 text-[#94a3b8]" />
             </Link>
           </div>
@@ -489,13 +419,12 @@ export default function SecurityArchitecturePage() {
 
         {/* Footer */}
         <footer className="pt-8 border-t border-[#1e293b] text-center text-[#94a3b8] text-sm">
-          <p className="mb-2">CrimsonARB — Bayou City Blockchain</p>
-          <p className="text-[#dc2626] font-mono">
-            The vault that says NO — because the safest yield is the yield you don&apos;t chase.
+          <p>CrimsonARB - Bayou City Blockchain - 2026</p>
+          <p className="mt-2 font-mono text-[#dc2626]">
+            The vault that says NO - because the safest yield is the yield you do not chase.
           </p>
-          <p className="mt-4">crimsonarb.com | Ranger Build-A-Bear 2026</p>
         </footer>
       </main>
     </div>
   )
-}`}
+}
