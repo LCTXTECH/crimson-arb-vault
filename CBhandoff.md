@@ -159,7 +159,7 @@ Pre-finality screening before any Drift execution:
 
 ## File Inventory
 
-### Pages (26 pages)
+### Pages (29 pages)
 
 | Route | File | Purpose |
 |-------|------|---------|
@@ -168,7 +168,10 @@ Pre-finality screening before any Drift execution:
 | `/transparency` | `app/transparency/page.tsx` | Investor report with charts |
 | `/proof-of-no-trade` | `app/proof-of-no-trade/page.tsx` | Skip manifesto page |
 | `/whitepaper` | `app/whitepaper/page.tsx` | Technical whitepaper with TOC |
-| `/judges` | `app/judges/page.tsx` | Hackathon submission (noindex) |
+| `/judges` | `app/judges/page.tsx` | **PRIMARY** Hackathon landing - $285M narrative |
+| `/drift-replay` | `app/drift-replay/page.tsx` | **FEATURED** 75s attack replay demo |
+| `/submission` | `app/submission/page.tsx` | Copy-ready Superteam submission |
+| `/security-architecture` | `app/security-architecture/page.tsx` | **DOCS** Three-layer security (Google Docs ready) |
 | `/admin/submission` | `app/admin/submission/page.tsx` | War room (noindex) |
 | `/mainnet-roadmap` | `app/mainnet-roadmap/page.tsx` | Deployment timeline |
 | `/chaos-demo` | `app/chaos-demo/page.tsx` | 60s GUARD demo for video |
@@ -565,6 +568,46 @@ Global wallet pages designed for zero-code migration to `wallet.bcblock.net`:
 - Set `NEXT_PUBLIC_WALLET_DOMAIN=https://wallet.bcblock.net`
 - Update Privy Dashboard Custom URLs
 - Deploy same code to new domain
+
+---
+
+## Drift Attack Replay Demo
+
+### Status: COMPLETE
+
+**Purpose:** 75-second cinematic demonstration showing how CrimsonARB's three-layer security would have blocked the $285M Drift Protocol exploit.
+
+### Files
+
+| File | Purpose |
+|------|---------|
+| `components/drift-attack-replay.tsx` | Main replay component with hex grid |
+| `app/drift-replay/page.tsx` | Page wrapper with metadata |
+
+### 5-Phase State Machine
+
+| Phase | Duration | Action |
+|-------|----------|--------|
+| `IDLE` | - | Waiting for start |
+| `PHASE_1` | 25s | Sentry Brain detects CVT anomalies -> SKIP |
+| `PHASE_2` | 25s | AgentSentry detects governance migration -> GUARD |
+| `PHASE_3` | 25s | Webacy DD detects Tornado Cash origin -> BLOCK |
+| `COMPLETE` | - | "$285,000,000 PROTECTED" |
+
+### Visual Features
+
+- **3-column layout:** Attack Timeline (left), Hex Grid (center), Decision Log (right)
+- **Hex states:** IDLE -> SCANNING -> ACTIVE -> SKIP/GUARD/BLOCK -> SAFE
+- **Circuit Break overlay** during Phase 2
+- **Real-time decision logging** with timestamps
+- **Progress bar** with phase markers and speed control (1x/2x)
+- **Vault status bar:** OPERATIONAL -> GUARDED -> PROTECTED
+
+### Attack Vectors Demonstrated
+
+1. **Layer 1 (Sentry Brain):** Fake CVT token with manufactured price history
+2. **Layer 2 (AgentSentry):** Governance migration removing 48h timelock
+3. **Layer 3 (Webacy DD):** Attacker wallet from Tornado Cash, 8 days old
 
 ---
 

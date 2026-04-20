@@ -361,6 +361,12 @@ export default function ProofOfNoTradePage() {
             >
               View Transparency Report
             </Link>
+            <Link
+              href="/security-architecture"
+              className="px-6 py-3 bg-muted text-foreground font-mono text-sm rounded hover:bg-muted/80 transition-colors border border-primary/30"
+            >
+              Security Architecture
+            </Link>
           </div>
         </div>
       </section>
