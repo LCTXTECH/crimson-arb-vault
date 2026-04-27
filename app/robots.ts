@@ -10,11 +10,10 @@ export default function robots(): MetadataRoute.Robots {
         allow: "/",
         disallow: [
           "/api/",
-          "/api/claw/",
           "/_next/",
           "/admin/",
           "/private/",
-          "/judges/",
+          "/submission/",
           "/*.json$",
         ],
       },

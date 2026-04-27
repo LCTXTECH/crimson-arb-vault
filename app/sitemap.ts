@@ -39,29 +39,43 @@ const GEO_REGIONS = [
 ] as const
 
 // Core pages - these map to actual /app/[route]/page.tsx files
+// SEO-optimized: Hub and Spoke model with /protocol/atsp as technical anchor
 const CORE_PAGES = [
-  { path: "", priority: 1.0, changeFrequency: "daily" as const, images: ["/images/hero-banner.jpg", "/images/global-banner.png"] },
-  { path: "/vault", priority: 0.9, changeFrequency: "hourly" as const, images: [] },
-  { path: "/analytics", priority: 0.8, changeFrequency: "hourly" as const, images: [] },
-  { path: "/docs", priority: 0.7, changeFrequency: "weekly" as const, images: [] },
-  { path: "/docs/getting-started", priority: 0.7, changeFrequency: "monthly" as const, images: [] },
-  { path: "/docs/api", priority: 0.6, changeFrequency: "weekly" as const, images: [] },
-  { path: "/docs/sentry-ai", priority: 0.6, changeFrequency: "weekly" as const, images: [] },
-  { path: "/about", priority: 0.5, changeFrequency: "monthly" as const, images: [] },
-  { path: "/security", priority: 0.5, changeFrequency: "monthly" as const, images: [] },
-  { path: "/terms", priority: 0.3, changeFrequency: "yearly" as const, images: [] },
-  { path: "/privacy", priority: 0.3, changeFrequency: "yearly" as const, images: [] },
-  { path: "/sandbox", priority: 0.8, changeFrequency: "daily" as const, images: [] },
-  { path: "/transparency", priority: 0.9, changeFrequency: "weekly" as const, images: [] },
-  { path: "/proof-of-no-trade", priority: 1.0, changeFrequency: "weekly" as const, images: [] },
-  { path: "/mainnet-roadmap", priority: 0.9, changeFrequency: "weekly" as const, images: [] },
-  { path: "/whitepaper", priority: 1.0, changeFrequency: "monthly" as const, images: [] },
-  { path: "/blog", priority: 0.85, changeFrequency: "weekly" as const, images: [] },
-  { path: "/blog/proof-of-no-trade", priority: 0.90, changeFrequency: "monthly" as const, images: [] },
-  { path: "/blog/drift-protocol-funding-rate-guide", priority: 0.85, changeFrequency: "monthly" as const, images: [] },
-  { path: "/blog/agentsentry-pre-finality-screening", priority: 0.80, changeFrequency: "monthly" as const, images: [] },
-  { path: "/chaos-demo", priority: 0.85, changeFrequency: "monthly" as const, images: [] },
-  { path: "/founders-vault", priority: 0.90, changeFrequency: "weekly" as const, images: [] },
+  // Tier 1: Primary conversion pages
+  { path: "", priority: 1.0, changeFrequency: "daily" as const, images: [] },
+  { path: "/vault", priority: 0.95, changeFrequency: "hourly" as const, images: [] },
+  { path: "/protocol/atsp", priority: 1.0, changeFrequency: "weekly" as const, images: [] }, // NEW: ATSP spec
+  
+  // Tier 2: Proof & Trust (The Moat)
+  { path: "/transparency", priority: 0.95, changeFrequency: "weekly" as const, images: [] },
+  { path: "/proof-of-no-trade", priority: 0.95, changeFrequency: "weekly" as const, images: [] },
+  { path: "/drift-replay", priority: 0.90, changeFrequency: "monthly" as const, images: [] }, // NEW: Security demo
+  { path: "/security-architecture", priority: 0.90, changeFrequency: "monthly" as const, images: [] },
+  
+  // Tier 3: Documentation
+  { path: "/docs", priority: 0.85, changeFrequency: "weekly" as const, images: [] },
+  { path: "/docs/getting-started", priority: 0.80, changeFrequency: "monthly" as const, images: [] },
+  { path: "/docs/api", priority: 0.75, changeFrequency: "weekly" as const, images: [] },
+  { path: "/docs/sentry-ai", priority: 0.75, changeFrequency: "weekly" as const, images: [] },
+  { path: "/whitepaper", priority: 0.90, changeFrequency: "monthly" as const, images: [] },
+  
+  // Tier 4: Product pages
+  { path: "/sandbox", priority: 0.85, changeFrequency: "daily" as const, images: [] },
+  { path: "/chaos-demo", priority: 0.80, changeFrequency: "monthly" as const, images: [] },
+  { path: "/founders-vault", priority: 0.85, changeFrequency: "weekly" as const, images: [] },
+  { path: "/mainnet-roadmap", priority: 0.80, changeFrequency: "weekly" as const, images: [] },
+  
+  // Tier 5: Content & SEO
+  { path: "/blog", priority: 0.75, changeFrequency: "weekly" as const, images: [] },
+  { path: "/blog/proof-of-no-trade", priority: 0.70, changeFrequency: "monthly" as const, images: [] },
+  { path: "/blog/drift-protocol-funding-rate-guide", priority: 0.65, changeFrequency: "monthly" as const, images: [] },
+  { path: "/blog/agentsentry-pre-finality-screening", priority: 0.65, changeFrequency: "monthly" as const, images: [] },
+  
+  // Tier 6: Legal/Info
+  { path: "/about", priority: 0.50, changeFrequency: "monthly" as const, images: [] },
+  { path: "/security", priority: 0.50, changeFrequency: "monthly" as const, images: [] },
+  { path: "/terms", priority: 0.30, changeFrequency: "yearly" as const, images: [] },
+  { path: "/privacy", priority: 0.30, changeFrequency: "yearly" as const, images: [] },
 ]
 
 // Market pages - maps to /app/markets/[symbol]/page.tsx with full SEO

@@ -278,7 +278,7 @@ export default function Dashboard() {
             <CrimsonLogo />
             <div>
               <h1 className="text-lg font-semibold text-foreground">CrimsonArb Vault</h1>
-              <p className="text-xs text-muted-foreground">AgentSentry Active</p>
+              <p className="text-xs text-muted-foreground">ATSP v1.0.1 Compliant</p>
             </div>
           </Link>
           <div className="flex items-center gap-4">
@@ -301,13 +301,16 @@ export default function Dashboard() {
               </svg>
               Audit Trail
             </button>
-            <div className="flex items-center gap-2">
+            <Link 
+              href="/protocol/atsp"
+              className="flex items-center gap-2 px-2 py-1 rounded border border-[#00ff88]/30 hover:border-[#00ff88]/60 transition-colors"
+            >
               <span className="relative flex h-2 w-2">
                 <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#00FF88] opacity-75"></span>
                 <span className="relative inline-flex h-2 w-2 rounded-full bg-[#00FF88]"></span>
               </span>
-              <span className="text-xs text-muted-foreground">Connected to Drift</span>
-            </div>
+              <span className="text-xs text-[#00ff88] font-mono">ATSP</span>
+            </Link>
             <span className="text-xs font-mono text-muted-foreground">
               {mounted && currentTime ? currentTime.toLocaleTimeString() : "--:--:--"}
             </span>
