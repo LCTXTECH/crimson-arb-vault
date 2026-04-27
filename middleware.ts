@@ -1,6 +1,23 @@
 import { NextResponse } from "next/server"
 import type { NextRequest } from "next/server"
 
+// SEO Cleanup: 301 Redirects for dead links to preserve link equity
+const REDIRECT_MAP: Record<string, string> = {
+  '/markets/sol-perp': '/protocol/atsp',
+  '/markets/btc-perp': '/protocol/atsp',
+  '/markets/eth-perp': '/protocol/atsp',
+  '/markets/jto-perp': '/protocol/atsp',
+  '/old-docs': '/docs',
+  '/docs/api-reference': '/docs/api',
+  '/docs/architecture': '/security-architecture',
+  '/yield': '/vault',
+  '/strategy': '/whitepaper',
+  '/agentsentry': '/protocol/atsp',
+  '/sim': '/sandbox',
+  '/sim/chaos': '/chaos-demo',
+  '/demo': '/drift-replay',
+}
+
 // Supported regions for geo-routing
 const SUPPORTED_REGIONS = ["us", "uk", "sg", "hk", "ae", "de", "jp", "cn", "kr"] as const
 type SupportedRegion = (typeof SUPPORTED_REGIONS)[number]
@@ -35,6 +52,11 @@ const EXCLUDED_PATHS = [
 export function middleware(request: NextRequest) {
   const { pathname, search } = request.nextUrl
   const response = NextResponse.next()
+
+  // Handle 301 redirects for dead links (SEO cleanup)
+  if (REDIRECT_MAP[pathname]) {
+    return NextResponse.redirect(new URL(REDIRECT_MAP[pathname], request.url), 301)
+  }
 
   // Skip excluded paths
   if (EXCLUDED_PATHS.some((path) => pathname.startsWith(path))) {

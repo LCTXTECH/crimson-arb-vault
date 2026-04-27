@@ -2,9 +2,9 @@
 
 **Project:** CrimsonARB - AI-Augmented Basis Trade Vault  
 **Client:** Bayou City Blockchain (BCBlock)  
-**Date:** April 2, 2026  
-**Version:** 2.0  
-**Status:** Devnet Sandbox Complete - Privy Auth Active - Webacy Integrated
+**Date:** April 27, 2026  
+**Version:** 3.0  
+**Status:** ATSP v1.0.1 Protocol Complete - Control Plane Active - SEO Optimized
 
 ---
 
@@ -12,18 +12,20 @@
 
 1. [Executive Summary](#executive-summary)
 2. [System Architecture](#system-architecture)
-3. [Three-Layer Security Model](#three-layer-security-model)
-4. [File Inventory](#file-inventory)
-5. [Database Schema](#database-schema)
-6. [API Reference](#api-reference)
-7. [Simulation Engine](#simulation-engine)
-8. [Authentication (Privy)](#authentication-privy)
-9. [Webacy DD.xyz Integration](#webacy-ddxyz-integration)
-10. [Environment Variables](#environment-variables)
-11. [Deployment Configuration](#deployment-configuration)
-12. [Testing Protocol](#testing-protocol)
-13. [Recommendations](#recommendations)
-14. [Roadmap](#roadmap)
+3. [ATSP v1.0.1 Protocol](#atsp-v101-protocol)
+4. [Three-Layer Security Model](#three-layer-security-model)
+5. [File Inventory](#file-inventory)
+6. [Database Schema](#database-schema)
+7. [API Reference](#api-reference)
+8. [Simulation Engine](#simulation-engine)
+9. [Authentication (Privy)](#authentication-privy)
+10. [Webacy DD.xyz Integration](#webacy-ddxyz-integration)
+11. [SEO & Redirects](#seo--redirects)
+12. [Environment Variables](#environment-variables)
+13. [Deployment Configuration](#deployment-configuration)
+14. [Testing Protocol](#testing-protocol)
+15. [Recommendations](#recommendations)
+16. [Roadmap](#roadmap)
 
 ---
 
@@ -48,9 +50,11 @@ CrimsonARB is an institutional-grade delta-neutral yield vault using AI ("Sentry
 | TVL Cap (Devnet) | $100,000 |
 
 ### URLs
-- **Production:** https://crimsonarb.com
+- **Production:** https://crimsonarb.com (Institutional Control Plane)
+- **ATSP Protocol:** https://crimsonarb.com/protocol/atsp (v1.0.1 Spec)
 - **Judges Page:** https://crimsonarb.com/judges (PRIMARY HACKATHON PAGE)
 - **Drift Replay:** https://crimsonarb.com/drift-replay (75s Security Demo)
+- **Security Architecture:** https://crimsonarb.com/security-architecture (Google Docs ready)
 - **Submission:** https://crimsonarb.com/submission (Superteam Copy)
 - **Sandbox:** https://crimsonarb.com/sandbox
 - **Chaos Demo:** https://crimsonarb.com/chaos-demo
